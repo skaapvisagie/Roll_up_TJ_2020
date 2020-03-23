@@ -5444,7 +5444,7 @@ LATC5 = 1;
 
 print_screen("DCBA Roll-up TJ", "-> Insert PCB & Start");
 
-if(RF5 == 0)
+if(RF2 == 0)
 {
 print_screen("Board","Detected");
 }
@@ -5456,7 +5456,7 @@ while(1)
 }
 
 
-print_screen("Powering Board", "On AC 2");
+print_screen("Powering Board", " ");
 
 LATD5 = 1;
 
@@ -5469,7 +5469,8 @@ _delay((unsigned long)((2000)*(16000000/4000.0)));
 power_supply_set(0);
 
 _delay((unsigned long)((500)*(16000000/4000.0)));
-
+Vout_set(30);
+_delay((unsigned long)((500)*(16000000/4000.0)));
 
 if((RA0 == 0) || (RA1 == 0))
 {
@@ -5479,9 +5480,8 @@ print_error("Error", "Motor Short");
 
 print_screen("Measuring", "Q Current");
 
-ADC_val = get_current();
-
-if(ADC_val > 90)
+# 1200
+if(ADC_val > 20)
 {
 print_error("Q Current", "Too High");
 }
@@ -5490,31 +5490,40 @@ print_error("Q Current", "Too High");
 
 print_screen("Measuring V1", "");
 
+
 ADC_val = ADC_get_val(0b01101001);
 
-if(ADC_val < 693)
+
+if(ADC_val < 640)
 {
 print_error("V1 Voltage-Jig", "Too Low");
 }
 
-# 1217
+# 1226
 print_screen("Measuring 24V", "");
 
 ADC_val = ADC_get_val(0b01011101);
+
 
 if(ADC_val < 533)
 {
 print_error("24V Voltage", "Too Low");
 }
-if(ADC_val > 572)
+if(ADC_val > 590)
 {
 print_error("24V Voltage", "Too High");
 }
 
-# 1237
+# 1247
 print_screen("Measuring 5v", "");
 
 ADC_val = ADC_get_val(0b01100001);
+while(1)
+{
+ADC_val = ADC_get_val(0b01100001);
+lcd_print_int(ADC_val, 1, 1, 1);
+_delay((unsigned long)((100)*(16000000/4000.0)));
+}
 
 if(ADC_val < 110)
 {
@@ -5525,10 +5534,10 @@ if(ADC_val > 133)
 print_error("5V Voltage", "Too High");
 }
 
-# 1257
+# 1273
 print_screen("Measuring 3.3v", "");
 
-ADC_val = ADC_get_val(0b01100101);
+
 
 if(ADC_val < 73)
 {
@@ -5539,7 +5548,7 @@ if(ADC_val > 94)
 print_error("3.3V Voltage", "Too High");
 }
 
-# 1277
+# 1293
 print_screen("Programming", "Bypassed");
 
 
@@ -5595,7 +5604,7 @@ LATB4 = 1;
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
 
-# 1339
+# 1355
 ADC_val = ADC_get_val(0b01110101);
 
 if(ADC_val > 646)
@@ -5607,7 +5616,7 @@ if(ADC_val < 618)
 {
 print_error("Charge Err", "Voltage to Low");
 
-# 1358
+# 1374
 }
 
 
@@ -5617,7 +5626,7 @@ LATB4 = 0;
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
 
-# 1377
+# 1393
 send_usart_packet_manage(129, 129);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
@@ -5630,7 +5639,7 @@ if(Data_Temp_Work_int < 495)
 print_error("V2 SENSE", "Too Low");
 }
 
-# 1403
+# 1419
 send_usart_packet_manage(130, 130);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
@@ -5686,7 +5695,7 @@ print_screen("Testing", "All io's high");
 send_usart_packet_manage(148, 148);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
-# 1463
+# 1479
 if(!!((Data_Temp_Work_int) & (1<<(0))) != 1)
 {
 print_error("Error", "Encoder Input");
@@ -5707,7 +5716,7 @@ if(!!((Data_Temp_Work_int) & (1<<(3))) != 1)
 print_error("Error", "Butt Down Input");
 }
 
-# 1488
+# 1504
 if(!!((Data_Temp_Work_int) & (1<<(5))) != 1)
 {
 print_error("Error", "Limit Input");
@@ -6186,7 +6195,7 @@ LATF4 = 0;
 
 print_screen("Testing Charger", "");
 
-# 1972
+# 1988
 LATB6 = 1;
 LATB4 = 1;
 
@@ -6204,7 +6213,7 @@ if(ADC_val < 618)
 {
 print_error("Charge Err", "Voltage to Low");
 
-# 1998
+# 2014
 }
 
 
@@ -6264,7 +6273,7 @@ buzz_timer = 1000 ; LATC5 = 1;
 while(1)
 {}
 
-# 2484
+# 2500
 }
 
 void testjig_done(unsigned char state, unsigned char device_type)
@@ -6300,7 +6309,7 @@ print_error("Insert New Board","Then Press Start");
 
 while(1){
 _delay((unsigned long)((50)*(16000000/4000.0)));
-if(RF5==1) {
+if(RF2==1) {
 print_screen("Insert New Board","Then Press Start");
 power_supply_set(4);
 }
@@ -6344,10 +6353,10 @@ break;
 void buzz_one(unsigned int time)
 {
 
-# 2566
+# 2582
 }
 
-# 2572
+# 2588
 void i2c_Start(void) {
 
 SSP1CON2bits.SEN = 1;
@@ -6411,7 +6420,7 @@ _delay((unsigned long)((2)*(16000000/4000.0)));
 i2c_Stop();
 }
 
-# 2658
+# 2674
 void clear_lcd(void) {
 i2c_Start();
 i2c_Write(0x7C);
@@ -6467,7 +6476,7 @@ i2c_Write(0x0F);
 i2c_Stop();
 }
 
-# 2924
+# 2940
 void contrast_set(unsigned char contrast)
 {
 char cont_low = 0x70;
@@ -6528,7 +6537,7 @@ ten_thou = (hund * 0x67) >> 10;
 hund = hund - 10 * ten_thou;
 }
 
-# 3027
+# 3043
 void print_error(const unsigned char *top, const unsigned char *bottom)
 {
 CCPR9L = 0;
@@ -6704,7 +6713,7 @@ i2c_write_char(charmap[i]);
 clear_lcd();
 }
 
-# 3256
+# 3272
 void lcd_print_int(unsigned int number, unsigned int pos, unsigned char decimal, unsigned char ten_thou_digit)
 {
 lcd_set_cursor(2, pos + 1 - ten_thou_digit);
@@ -6731,7 +6740,7 @@ if (decimal & 0x02)i2c_write_char('.');
 i2c_write_char(unit + 48);
 }
 
-# 3299
+# 3315
 void init_uart1(void)
 {
 TX1STA = 0b00100000;
@@ -6751,7 +6760,7 @@ SP2BRGH = 0x00;
 SP2BRGL = 103;
 }
 
-# 3337
+# 3353
 void send_uart1(unsigned char uart1_data) {
 while (TX1STAbits.TRMT == 0);
 TX1REG = uart1_data;
@@ -6832,7 +6841,7 @@ lcd_print_int(callsign, 10, 0b00001000, 1);
 while(1)
 {}
 
-# 3427
+# 3443
 ADC_val=uart_buff_work_recieve[1]*255+uart_buff_work_recieve[2];
 voltage_i = ADC_to_mv_DUT(ADC_val);
 
@@ -7006,13 +7015,13 @@ void power_supply_set(unsigned char supply)
 switch (supply)
 {
 case 0:
-LATA6 = 0;
-LATD4 = 1;
-LATD5 = 0;
-LATD6 = 0;
-LATD7 = 0;
 
-LATB5 = 0;
+LATD4 = 1;
+LATD5 = 1;
+
+
+
+
 break;
 case 1:
 LATA6 = 0;
@@ -7061,66 +7070,40 @@ temp = ADC_get_val(0b01010001);
 
 temp = temp * 1.28;
 
-# 3659
+# 3675
 return temp;
 }
 
 void Vout_set(int Volts) {
 unsigned long digi_step = 0;
 
-# 3669
+# 3685
 switch (Volts) {
-case 6:
-digi_step = 20;
-break;
-case 7:
-digi_step = 39;
-break;
-case 8:
-digi_step = 52;
-break;
-case 9:
-digi_step = 62;
-break;
-case 10:
-digi_step = 70;
-break;
-case 11:
-digi_step = 76;
-break;
+
 case 12:
-digi_step = 81;
-break;
-case 13:
-digi_step = 85;
-break;
-case 14:
-digi_step = 88;
-break;
-case 15:
-digi_step = 91;
+digi_step = 44;
 break;
 case 16:
-digi_step = 94;
+digi_step = 70;
 break;
-case 17:
-digi_step = 96;
+case 19:
+digi_step = 81;
 break;
-case 18:
+case 24:
+digi_step = 93;
+break;
+case 28:
 digi_step = 98;
 break;
-case 20:
-digi_step = 102;
-break;
-case 25:
-digi_step = 112;
+case 30:
+digi_step = 101;
 break;
 default:
 digi_step = 0;
 break;
 }
 
-# 3724
+# 3714
 digitalpot((unsigned char) digi_step);
 }
 
@@ -7137,7 +7120,7 @@ void debug_fast_tx(unsigned int data) {
 GIE = 0;
 LATD2 = 0;
 
-# 3744
+# 3734
 __nop();
 __nop();
 __nop();

@@ -64,7 +64,7 @@
 #define button          RE1
 #define Remote_Tx       LATF4
 #define encoder         LATF7
-#define Sink_Output     LATE3
+//#define Sink_Output     LATE3
 
 #define CHECK_BIT(var,pos) !!((var) & (1<<(pos))) //allows us to check the bits of an int (useful for checking registers)
 
@@ -109,7 +109,7 @@
 
 //Inputs
 
-#define board_detect RF5
+#define board_detect  RF2 // RF5
 
 #define mclr_reset_P10 LATD7
 #define mclr_reset_P10_TRIS TRISD7
@@ -124,7 +124,7 @@
 #define BM LATG4
 
 //#define relay_NC_P4 RF5
-#define relay_NO_P8 RF2
+//#define relay_NO_P8 RF2
 
 #define Bus_input RC1
 #define Bus_fet LATC0
@@ -278,12 +278,12 @@ enum {
 //adc channel select
 #define ADC_current_sink    0b01001101//channel 19 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_v2_test         0b01110101//channel 29 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
-#define ADC_3v3_test        0b01100101//channel 25 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
+#define ADC_SMXI_5v_test    0b01100101//channel 25 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_5v_test         0b01100001//channel 24 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_24v_test        0b01011101//channel 23 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_v1_test         0b01101001//channel 26 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_Q_curr_sense    0b01010001//channel 20 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
-#define Pi_to_TJ_trigger    0b01000001//channel 16, RF0 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
+//#define Pi_to_TJ_trigger    0b01000001//channel 16, RF0 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
 #define ADC_Motor_1         0b00000101//channel 1 for checking the optocoupler for motor 1
 #define ADC_Motor_2         0b00000001//channel 0 for checking the optocoupler for motor 2
 
@@ -1166,7 +1166,7 @@ void main(void)
     }
     
 //1. Power Board
-    print_screen("Powering Board", "On AC 2");
+    print_screen("Powering Board", " ");
     
     power_supply_k8 = 1; //switch AC2 input on 
     
@@ -1179,7 +1179,8 @@ void main(void)
     power_supply_set(AC1); //switch back to AC1   
     
     __delay_ms(500); //contact protection delay (crappy relays)
-    
+    Vout_set(30);
+     __delay_ms(500); //contact protection delay (crappy relays)
 //1b. Measure for motor short
     if((Opto_motor_dir_a == 0) || (Opto_motor_dir_b == 0))
     {
@@ -1189,9 +1190,14 @@ void main(void)
 //2. Measure Q Current 
     print_screen("Measuring", "Q Current");  
 
-    ADC_val = get_current(); //Get mA (normal around 64mA) 
-    
-    if(ADC_val > 90) //> 90mA
+//    while(1)
+//    {
+//        ADC_val = get_current(); //Get mA (normal around 64mA)
+//        lcd_print_int(ADC_val, 1, 0b00001000, 1);
+//        __delay_ms(50);
+//        
+//    }
+    if(ADC_val > 20) //> 20mA
     {
         print_error("Q Current", "Too High");
     }
@@ -1200,16 +1206,19 @@ void main(void)
 //3. Mesure V1
     print_screen("Measuring V1", "");  
     
+    
     ADC_val = ADC_get_val(ADC_v1_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
     
-    if(ADC_val < 693) //< 30.2v
-    {//yes
-        print_error("V1 Voltage-Jig", "Too Low");
+    
+    if(ADC_val < 640) //< 28v
+    {//yes     
+       print_error("V1 Voltage-Jig", "Too Low");
     }
+    
 //    while(1)
 //    {
 //        ADC_val = ADC_get_val(ADC_v1_test); //Get Vol
-//        lcd_print_int(ADC_val, 1, 0b00001000, 1);
+//        lcd_print_int(ADC_val, 1, 1, 1);
 //        __delay_ms(100);
 //    }
     
@@ -1218,11 +1227,12 @@ void main(void)
     
     ADC_val = ADC_get_val(ADC_24v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
     
+  
     if(ADC_val < 533) //< 23.2v
     {//yes
         print_error("24V Voltage", "Too Low");
     }
-    if(ADC_val > 572) //> 24.9v
+    if(ADC_val > 590) //> 26.5v
     {//yes
         print_error("24V Voltage", "Too High");
     }
@@ -1237,7 +1247,7 @@ void main(void)
     print_screen("Measuring 5v", "");
     
     ADC_val = ADC_get_val(ADC_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
-    
+
     if(ADC_val < 110) //< 4.8v
     {//yes
         print_error("5V Voltage", "Too Low");
@@ -1246,6 +1256,24 @@ void main(void)
     {//yes
         print_error("5V Voltage", "Too High");
     }
+ 
+#ifdef SMXI
+    //6. Measure SMXI 5v
+       print_screen("Measuring 5v", "");
+
+       ADC_val = ADC_get_val(ADC_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
+
+
+       if(ADC_val < 110) //< 4.8v
+       {//yes
+           print_error("5V Voltage", "Too Low");
+       }
+       if(ADC_val > 133) //> 5.8v
+       {//yes
+           print_error("5V Voltage", "Too High");
+       }
+       
+#endif
 //    while(1)
 //    {
 //        ADC_val = ADC_get_val(ADC_5v_test); //Get Vol
@@ -1253,25 +1281,6 @@ void main(void)
 //        __delay_ms(100);
 //    }
     
-//6. Mesure 3.3v
-    print_screen("Measuring 3.3v", "");
-    
-    ADC_val = ADC_get_val(ADC_3v3_test); //Get Voltage (calibrated 3.32v @ 84) factor = v / inc 
-    
-    if(ADC_val < 73) //< 2.9v
-    {//yes
-        print_error("3.3V Voltage", "Too Low");
-    }
-    if(ADC_val > 94) //> 3.7v 93
-    {//yes
-        print_error("3.3V Voltage", "Too High");
-    }
-//    while(1)
-//    {
-//        ADC_val = ADC_get_val(ADC_3v3_test); //Get Vol
-//        lcd_print_int(ADC_val, 1, 0b00001000, 1);
-//        __delay_ms(200);
-//    }
  
 //7. Program Device 
     print_screen("Programming", "Bypassed");
@@ -3597,13 +3606,13 @@ void power_supply_set(unsigned char supply)
     switch (supply) 
     {
         case AC1:
-            power_supply_k6 = 0;
+            //power_supply_k6 = 0;
             power_supply_k7 = 1;
-            power_supply_k8 = 0;
-            power_supply_k9 = 0;
-            power_supply_k10 = 0;
+            power_supply_k8 = 1;
+            //power_supply_k9 = 0;
+            //power_supply_k10 = 0;
             //power_supply_k12 = 0;
-            power_supply_k13 = 0;
+            //power_supply_k13 = 0;
             break;
         case AC2:
             power_supply_k6 = 0;
@@ -3667,50 +3676,24 @@ void Vout_set(int Volts) {
 
     //   digi_step = 128-(res_variable*128)/DIGITAL_RES_MAX;
     switch (Volts) {
-        case 6:
-            digi_step = 20;
-            break;
-        case 7:
-            digi_step = 39;
-            break;
-        case 8:
-            digi_step = 52;
-            break;
-        case 9:
-            digi_step = 62;
-            break;
-        case 10:
-            digi_step = 70;
-            break;
-        case 11:
-            digi_step = 76;
-            break;
+        
         case 12:
-            digi_step = 81;
-            break;
-        case 13:
-            digi_step = 85;
-            break;
-        case 14:
-            digi_step = 88;
-            break;
-        case 15:
-            digi_step = 91;
+            digi_step = 44;
             break;
         case 16:
-            digi_step = 94;
+            digi_step = 70;//16v
             break;
-        case 17:
-            digi_step = 96;
+        case 19:
+            digi_step = 81;//19v
             break;
-        case 18:
-            digi_step = 98;
+        case 24:
+            digi_step = 93; //24v
             break;
-        case 20:
-            digi_step = 102;
+        case 28:
+            digi_step = 98; //28v
             break;
-        case 25:
-            digi_step = 112;
+        case 30:
+            digi_step = 101; //30v
             break;
         default:
             digi_step = 0;
