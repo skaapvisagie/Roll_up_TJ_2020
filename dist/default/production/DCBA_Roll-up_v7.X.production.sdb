@@ -3,14 +3,14 @@
 [d edition pro ]
 [d chip 16F1527 ]
 [d frameptr 6 ]
-"272 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"278 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [e E3701 . `uc
 current_sink_off 0
 current_sink_on 1
 sampling_ADC 2
 updating_PWM 3
 ]
-"276
+"282
 [e E3707 . `uc
 pickit_finish 0
 pickit_start 1
@@ -38,81 +38,81 @@ pickit_idle 6
 [v ___wmul __wmul `(ui  1 e 2 0 ]
 "4 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\Umul8.c
 [v ___bmul __bmul `(uc  1 e 1 0 ]
-"415 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"421 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _EUSART1_Write EUSART1_Write `(v  1 e 0 0 ]
-"427
+"433
 [v _send_usart_packet_manage send_usart_packet_manage `(v  1 e 0 0 ]
-"454
+"460
 [v _manage_read_byte manage_read_byte `(uc  1 e 1 0 ]
-"491
+"497
 [v _receive_data_bytes receive_data_bytes `(ui  1 e 2 0 ]
-"937
+"943
 [v _isr isr `II(v  1 e 0 0 ]
-"1090
+"1096
 [v _main main `(v  1 e 0 0 ]
-"2576
+"2565
 [v _buzz_one buzz_one `(v  1 e 0 0 ]
-"2588
+"2577
 [v _i2c_Start i2c_Start `(v  1 e 0 0 ]
-"2596
+"2585
 [v _i2c_Write i2c_Write `(v  1 e 0 0 ]
-"2602
+"2591
 [v _i2c_Stop i2c_Stop `(v  1 e 0 0 ]
-"2608
+"2597
 [v _i2c_Write_string i2c_Write_string `(v  1 e 0 0 ]
-"2621
+"2610
 [v _i2c_write_char i2c_write_char `(v  1 e 0 0 ]
-"2630
+"2619
 [v _init_i2c_lcd_5v init_i2c_lcd_5v `(v  1 e 0 0 ]
-"2674
+"2663
 [v _clear_lcd clear_lcd `(v  1 e 0 0 ]
-"2683
+"2672
 [v _i2c_first_line i2c_first_line `(v  1 e 0 0 ]
-"2692
+"2681
 [v _i2c_second_line i2c_second_line `(v  1 e 0 0 ]
-"2701
+"2690
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 0 0 ]
-"2956
+"2945
 [v _ten_thou_conv ten_thou_conv `(v  1 e 0 0 ]
-"3043
+"3032
 [v _print_error print_error `(v  1 e 0 0 ]
-"3066
+"3055
 [v _print_screen print_screen `(v  1 e 0 0 ]
-"3203
+"3192
 [v _lcd_createChar lcd_createChar `(v  1 e 0 0 ]
-"3272
+"3261
 [v _lcd_print_int lcd_print_int `(v  1 e 0 0 ]
-"3315
+"3304
 [v _init_uart1 init_uart1 `(v  1 e 0 0 ]
-"3325
+"3314
 [v _init_uart2 init_uart2 `(v  1 e 0 0 ]
-"3358
+"3347
 [v _send_uart2 send_uart2 `(v  1 e 0 0 ]
-"3391
+"3380
 [v _get_rollup get_rollup `(v  1 e 0 0 ]
-"3401
+"3390
 [v _uart_reset uart_reset `(v  1 e 0 0 ]
-"3476
+"3465
 [v _uart_receive_four uart_receive_four `(uc  1 e 1 0 ]
-"3523
+"3512
 [v _init_i2c init_i2c `(v  1 e 0 0 ]
-"3533
+"3522
 [v _init_ADC init_ADC `(v  1 e 0 0 ]
-"3553
+"3542
 [v _ADC_to_mv_DUT ADC_to_mv_DUT `(ui  1 e 2 0 ]
-"3559
+"3548
 [v _ADC_get_val ADC_get_val `(ui  1 e 2 0 ]
-"3598
+"3587
 [v _init_current_sink init_current_sink `(v  1 e 0 0 ]
-"3611
+"3600
 [v _power_supply_set power_supply_set `(v  1 e 0 0 ]
-"3664
+"3653
 [v _get_current get_current `(ui  1 e 2 0 ]
-"3678
+"3667
 [v _Vout_set Vout_set `(v  1 e 0 0 ]
-"3717
+"3709
 [v _digitalpot digitalpot `(v  1 e 0 0 ]
-"3726
+"3718
 [v _debug_fast_tx debug_fast_tx `(v  1 e 0 0 ]
 [s S83 . 1 `uc 1 IOCIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
@@ -349,18 +349,18 @@ pickit_idle 6
 [v _GIE GIE `VEb  1 e 0 @95 ]
 "9004
 [v _LATA6 LATA6 `VEb  1 e 0 @2150 ]
-"9006
-[v _LATA7 LATA7 `VEb  1 e 0 @2151 ]
 "9016
 [v _LATB4 LATB4 `VEb  1 e 0 @2156 ]
 "9018
 [v _LATB5 LATB5 `VEb  1 e 0 @2157 ]
 "9020
 [v _LATB6 LATB6 `VEb  1 e 0 @2158 ]
-"9022
-[v _LATB7 LATB7 `VEb  1 e 0 @2159 ]
+"9028
+[v _LATC2 LATC2 `VEb  1 e 0 @2162 ]
 "9034
 [v _LATC5 LATC5 `VEb  1 e 0 @2165 ]
+"9036
+[v _LATC6 LATC6 `VEb  1 e 0 @2166 ]
 "9038
 [v _LATC7 LATC7 `VEb  1 e 0 @2167 ]
 "9044
@@ -391,14 +391,14 @@ pickit_idle 6
 [v _RA4 RA4 `VEb  1 e 0 @100 ]
 "9128
 [v _RA5 RA5 `VEb  1 e 0 @101 ]
+"9134
+[v _RB0 RB0 `VEb  1 e 0 @104 ]
 "9162
 [v _RC2IF RC2IF `VEb  1 e 0 @165 ]
 "9196
 [v _RE0 RE0 `VEb  1 e 0 @128 ]
-"9204
-[v _RE4 RE4 `VEb  1 e 0 @132 ]
-"9206
-[v _RE5 RE5 `VEb  1 e 0 @133 ]
+"9210
+[v _RE7 RE7 `VEb  1 e 0 @135 ]
 "9216
 [v _RF2 RF2 `VEb  1 e 0 @5218 ]
 "9234
@@ -413,184 +413,184 @@ pickit_idle 6
 [v _TRISC4 TRISC4 `VEb  1 e 0 @1140 ]
 "9580
 [v _TRISG0 TRISG0 `VEb  1 e 0 @6248 ]
-"276 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"282 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _pickit_state pickit_state `E3707  1 e 1 0 ]
-"358
+"364
 [v _usart_receive_state_main usart_receive_state_main `uc  1 e 1 0 ]
-"369
+"375
 [v _usart_fault_state usart_fault_state `uc  1 e 1 0 ]
-"382
+"388
 [v _usart_fault_flag usart_fault_flag `VEb  1 e 0 0 ]
-"385
+"391
 [v _ten_thou ten_thou `uc  1 e 1 0 ]
 [v _thou thou `uc  1 e 1 0 ]
 [v _hund hund `uc  1 e 1 0 ]
 [v _ten ten `uc  1 e 1 0 ]
 [v _unit unit `uc  1 e 1 0 ]
-"386
+"392
 [v _uart_buff_work_recieve uart_buff_work_recieve `[5]uc  1 e 5 0 ]
-"387
+"393
 [v _uart_receive_timer uart_receive_timer `VEi  1 e 2 0 ]
 [v _motor_direction_timer motor_direction_timer `VEi  1 e 2 0 ]
-"388
+"394
 [v _pickit_timer pickit_timer `VEui  1 e 2 0 ]
 [v _pickit_all_counter pickit_all_counter `VEui  1 e 2 0 ]
 [v _pickit_pgm_timeout pickit_pgm_timeout `VEui  1 e 2 0 ]
 [v _usart_timer usart_timer `VEui  1 e 2 0 ]
-"389
+"395
 [v _current_sink_timer current_sink_timer `VEui  1 e 2 0 ]
 [v _testjig_timer testjig_timer `VEui  1 e 2 0 ]
-"391
+"397
 [v _one_second_timer one_second_timer `VEui  1 e 2 0 ]
-"392
+"398
 [v _buzz_timer buzz_timer `VEui  1 e 2 0 ]
-"393
+"399
 [v _ADC_cur_sink_val ADC_cur_sink_val `VEui  1 e 2 0 ]
-"394
+"400
 [v _curent_sink_val curent_sink_val `VEui  1 e 2 0 ]
 [v _current_sink_stable current_sink_stable `VEui  1 e 2 0 ]
-"396
+"402
 [v _ADC_val ADC_val `ui  1 e 2 0 ]
-"398
+"404
 [v _voltage_i voltage_i `ui  1 e 2 0 ]
 [v _Data_Temp_Work_int Data_Temp_Work_int `ui  1 e 2 0 ]
-"399
+"405
 [v _pickit_red_counter pickit_red_counter `ui  1 e 2 0 ]
-"401
+"407
 [v _tj_timer tj_timer `ui  1 e 2 0 ]
-"408
+"414
 [v _lower lower `ui  1 e 2 0 ]
-"409
+"415
 [v _higher higher `ui  1 e 2 0 ]
-"1090
+"1096
 [v _main main `(v  1 e 0 0 ]
 {
-"2500
+"2489
 } 0
-"427
+"433
 [v _send_usart_packet_manage send_usart_packet_manage `(v  1 e 0 0 ]
 {
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 wreg ]
-"429
+"435
 [v send_usart_packet_manage@checksum_send_work checksum_send_work `ui  1 a 2 11 ]
-"430
+"436
 [v send_usart_packet_manage@data_low_byte_3 data_low_byte_3 `uc  1 a 1 10 ]
 [v send_usart_packet_manage@data_high_byte_2 data_high_byte_2 `uc  1 a 1 9 ]
 [v send_usart_packet_manage@checksum_low_byte_5 checksum_low_byte_5 `uc  1 a 1 7 ]
 [v send_usart_packet_manage@checksum_high_byte_4 checksum_high_byte_4 `uc  1 a 1 6 ]
-"427
+"433
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 wreg ]
 [v send_usart_packet_manage@Data_carry Data_carry `ui  1 p 2 3 ]
-"433
+"439
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 8 ]
-"452
+"458
 } 0
-"415
+"421
 [v _EUSART1_Write EUSART1_Write `(v  1 e 0 0 ]
 {
 [v EUSART1_Write@txData txData `uc  1 a 1 wreg ]
 [v EUSART1_Write@txData txData `uc  1 a 1 wreg ]
 [v EUSART1_Write@txData txData `uc  1 a 1 2 ]
-"425
+"431
 } 0
-"491
+"497
 [v _receive_data_bytes receive_data_bytes `(ui  1 e 2 0 ]
 {
-"494
+"500
 [v receive_data_bytes@usart_validation_work usart_validation_work `ui  1 a 2 24 ]
 [v receive_data_bytes@data_int_value data_int_value `ui  1 a 2 17 ]
 [v receive_data_bytes@usart_checksum usart_checksum `ui  1 a 2 15 ]
-"493
+"499
 [v receive_data_bytes@data_low_byte data_low_byte `uc  1 a 1 23 ]
 [v receive_data_bytes@data_high_byte data_high_byte `uc  1 a 1 22 ]
 [v receive_data_bytes@command_byte command_byte `uc  1 a 1 21 ]
 [v receive_data_bytes@checksum_low_byte checksum_low_byte `uc  1 a 1 20 ]
 [v receive_data_bytes@checksum_high_byte checksum_high_byte `uc  1 a 1 19 ]
-"491
+"497
 [v receive_data_bytes@time_out_first_byte time_out_first_byte `ui  1 p 2 7 ]
-"930
+"936
 } 0
-"3043
+"3032
 [v _print_error print_error `(v  1 e 0 0 ]
 {
 [v print_error@top top `*.25DCCuc  1 p 2 0 ]
 [v print_error@bottom bottom `*.25DCCuc  1 p 2 2 ]
-"3064
+"3053
 } 0
-"3066
+"3055
 [v _print_screen print_screen `(v  1 e 0 0 ]
 {
 [v print_screen@top top `*.25DCCuc  1 p 2 6 ]
 [v print_screen@bottom bottom `*.25DCCuc  1 p 2 8 ]
-"3073
+"3062
 } 0
-"2692
+"2681
 [v _i2c_second_line i2c_second_line `(v  1 e 0 0 ]
 {
-"2699
+"2688
 } 0
-"2683
+"2672
 [v _i2c_first_line i2c_first_line `(v  1 e 0 0 ]
 {
-"2690
+"2679
 } 0
-"2608
+"2597
 [v _i2c_Write_string i2c_Write_string `(v  1 e 0 0 ]
 {
 [v i2c_Write_string@data data `*.25DCCuc  1 p 2 3 ]
-"2619
+"2608
 } 0
-"2674
+"2663
 [v _clear_lcd clear_lcd `(v  1 e 0 0 ]
 {
-"2681
+"2670
 } 0
-"3611
+"3600
 [v _power_supply_set power_supply_set `(v  1 e 0 0 ]
 {
 [v power_supply_set@supply supply `uc  1 a 1 wreg ]
 [v power_supply_set@supply supply `uc  1 a 1 wreg ]
 [v power_supply_set@supply supply `uc  1 a 1 2 ]
-"3662
+"3651
 } 0
-"3726
+"3718
 [v _debug_fast_tx debug_fast_tx `(v  1 e 0 0 ]
 {
-"3743
+"3735
 [v debug_fast_tx@i i `uc  1 a 1 6 ]
-"3726
+"3718
 [v debug_fast_tx@data data `ui  1 p 2 2 ]
-"3764
+"3756
 } 0
-"2576
+"2565
 [v _buzz_one buzz_one `(v  1 e 0 0 ]
 {
 [v buzz_one@time time `ui  1 p 2 2 ]
-"2582
+"2571
 } 0
-"454
+"460
 [v _manage_read_byte manage_read_byte `(uc  1 e 1 0 ]
 {
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 wreg ]
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 wreg ]
-"456
+"462
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 2 ]
-"489
+"495
 } 0
-"3272
+"3261
 [v _lcd_print_int lcd_print_int `(v  1 e 0 0 ]
 {
 [v lcd_print_int@number number `ui  1 p 2 6 ]
 [v lcd_print_int@pos pos `ui  1 p 2 8 ]
 [v lcd_print_int@decimal decimal `uc  1 p 1 10 ]
 [v lcd_print_int@ten_thou_digit ten_thou_digit `uc  1 p 1 11 ]
-"3296
+"3285
 } 0
-"2956
+"2945
 [v _ten_thou_conv ten_thou_conv `(v  1 e 0 0 ]
 {
 [v ten_thou_conv@n n `i  1 p 2 8 ]
-"2978
+"2967
 } 0
 "15 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\Umul16.c
 [v ___wmul __wmul `(ui  1 e 2 0 ]
@@ -615,68 +615,68 @@ pickit_idle 6
 [v ___bmul@multiplier multiplier `uc  1 a 1 5 ]
 "51
 } 0
-"2701 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"2690 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 0 0 ]
 {
 [v lcd_set_cursor@row row `uc  1 a 1 wreg ]
-"2703
+"2692
 [v lcd_set_cursor@LCD_position LCD_position `uc  1 a 1 6 ]
-"2701
+"2690
 [v lcd_set_cursor@row row `uc  1 a 1 wreg ]
 [v lcd_set_cursor@col col `uc  1 p 1 3 ]
-"2703
+"2692
 [v lcd_set_cursor@row row `uc  1 a 1 5 ]
-"2715
+"2704
 } 0
-"2621
+"2610
 [v _i2c_write_char i2c_write_char `(v  1 e 0 0 ]
 {
 [v i2c_write_char@char_data char_data `uc  1 a 1 wreg ]
 [v i2c_write_char@char_data char_data `uc  1 a 1 wreg ]
 [v i2c_write_char@char_data char_data `uc  1 a 1 3 ]
-"2628
+"2617
 } 0
-"3325
+"3314
 [v _init_uart2 init_uart2 `(v  1 e 0 0 ]
 {
-"3332
+"3321
 } 0
-"3315
+"3304
 [v _init_uart1 init_uart1 `(v  1 e 0 0 ]
 {
-"3322
+"3311
 } 0
-"2630
+"2619
 [v _init_i2c_lcd_5v init_i2c_lcd_5v `(v  1 e 0 0 ]
 {
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 wreg ]
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 wreg ]
 [v init_i2c_lcd_5v@single1_double2 single1_double2 `uc  1 p 1 3 ]
-"2632
+"2621
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 6 ]
-"2649
+"2638
 } 0
-"3523
+"3512
 [v _init_i2c init_i2c `(v  1 e 0 0 ]
 {
-"3531
+"3520
 } 0
-"3598
+"3587
 [v _init_current_sink init_current_sink `(v  1 e 0 0 ]
 {
-"3609
+"3598
 } 0
-"3533
+"3522
 [v _init_ADC init_ADC `(v  1 e 0 0 ]
 {
-"3539
+"3528
 } 0
-"3664
+"3653
 [v _get_current get_current `(ui  1 e 2 0 ]
 {
-"3666
+"3655
 [v get_current@temp temp `ui  1 a 2 36 ]
-"3676
+"3665
 } 0
 "28 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\lwtoft.c
 [v ___lwtoft __lwtoft `(f  1 e 3 0 ]
@@ -718,55 +718,55 @@ pickit_idle 6
 [v ___ftpack@sign sign `uc  1 p 1 6 ]
 "86
 } 0
-"3559 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"3548 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _ADC_get_val ADC_get_val `(ui  1 e 2 0 ]
 {
 [v ADC_get_val@channel channel `uc  1 a 1 wreg ]
-"3561
+"3550
 [v ADC_get_val@return_val return_val `ui  1 a 2 6 ]
-"3559
+"3548
 [v ADC_get_val@channel channel `uc  1 a 1 wreg ]
-"3562
+"3551
 [v ADC_get_val@channel channel `uc  1 a 1 8 ]
-"3574
+"3563
 } 0
-"3678
+"3667
 [v _Vout_set Vout_set `(v  1 e 0 0 ]
 {
-"3679
+"3668
 [v Vout_set@digi_step digi_step `ul  1 a 4 0 ]
-"3678
+"3667
 [v Vout_set@Volts Volts `i  1 p 2 6 ]
-"3715
+"3707
 } 0
-"3717
+"3709
 [v _digitalpot digitalpot `(v  1 e 0 0 ]
 {
 [v digitalpot@value value `uc  1 a 1 wreg ]
 [v digitalpot@value value `uc  1 a 1 wreg ]
 [v digitalpot@value value `uc  1 a 1 5 ]
-"3724
+"3716
 } 0
-"2596
+"2585
 [v _i2c_Write i2c_Write `(v  1 e 0 0 ]
 {
 [v i2c_Write@data data `uc  1 a 1 wreg ]
 [v i2c_Write@data data `uc  1 a 1 wreg ]
 [v i2c_Write@data data `uc  1 a 1 2 ]
-"2600
+"2589
 } 0
-"2602
+"2591
 [v _i2c_Stop i2c_Stop `(v  1 e 0 0 ]
 {
-"2606
+"2595
 } 0
-"2588
+"2577
 [v _i2c_Start i2c_Start `(v  1 e 0 0 ]
 {
-"2594
+"2583
 } 0
-"937
+"943
 [v _isr isr `II(v  1 e 0 0 ]
 {
-"1087
+"1093
 } 0

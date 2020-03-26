@@ -7,7 +7,7 @@
 //
 //Author : Leon Damaskinos
 
-#define PGM_Enable // comment out for programming disable
+//#define PGM_Enable // comment out for programming disable
 //#define Buzz_disable // comment out for buzzer disable on TJ
 //#define Board_identifier // comment out for identifier disable
 
@@ -73,7 +73,7 @@
 
 //both of these relays are powered via k4, see bottom of board
 #define k1        LATC2 //k1
-#define k2        LATC6 //k2
+//#define k2        LATC6 //k2
 #define k3        LATB7 //k3
 #define k4        LATA7 //k4
 #define k5        LATC7 //k5 
@@ -81,10 +81,16 @@
 #define ch2_tx      LATG3 //black wire, channel 2
 #define ch1_tx      LATG2 //blue wire, channel 1
 
-#define pickit_button_relay LATC7 //c7 and c6 tied together on rhs of Q4 on testjig
+#define pickit_button_relay LATC6 //c7 and c6 tied together on rhs of Q4 on testjig
+#ifdef SMXI
 #define pickit_LED_blue     RE4
-#define pickit_LED_green      RE6
-#define pickit_LED_red    RE5
+#define pickit_LED_green    RE6
+#define pickit_LED_red      RE5
+#else
+#define pickit_LED_blue     RE7
+#define pickit_LED_green    RB1
+#define pickit_LED_red      RB0
+#endif
 
 //#define CH2_high_current_K13_P10 LATB5-
 //#define CH3_high_current_K6_P13 LATA6
@@ -964,8 +970,8 @@ isr(void) {
                 case pickit_start:
                     //pickit_rel_1 = 1;
                     //pickit_rel_2 = 1;
-                    k3 = 1;
-                    k4 = 1;
+                    k1 = 1;
+                    k5 = 1;
                     pickit_timer = 500; //ms allow for relays to switch
                     pickit_state = pickit_push_button;
                 break;
@@ -1048,14 +1054,14 @@ isr(void) {
                     
                 break;
                 case pickit_error:
-                    k3 = 0;
-                    k4 = 0;
+                    k1 = 0;
+                    k5 = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                 break;
                 case pickit_finish:
-                    k3 = 0;
-                    k4 = 0;
+                    k1 = 0;
+                    k5 = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                     pickit_state = pickit_idle;
@@ -1116,7 +1122,7 @@ void main(void)
     //
     WPUB = 0b00000000; //
     WPUD = 0b00000000; //
-    WPUE = 0b00000000; //
+    WPUE = 0b00001000; //
     //
     ANSELA = 0b00000000; //
     ANSELB = 0b00001100; //
@@ -1164,7 +1170,7 @@ void main(void)
         while(1)
         {}
     }
-    
+     
 //1. Power Board
     print_screen("Powering Board", " ");
     
@@ -1179,9 +1185,15 @@ void main(void)
     power_supply_set(AC1); //switch back to AC1   
     
     __delay_ms(500); //contact protection delay (crappy relays)
-    Vout_set(30);
+    Vout_set(34);
      __delay_ms(500); //contact protection delay (crappy relays)
 //1b. Measure for motor short
+     
+//     print_screen("K3 and K4 set", " ");
+//     k3 = 1;
+//    k4 = 1;
+//    while(1);
+    
     if((Opto_motor_dir_a == 0) || (Opto_motor_dir_b == 0))
     {
         print_error("Error", "Motor Short");
@@ -1208,46 +1220,20 @@ void main(void)
     
     
     ADC_val = ADC_get_val(ADC_v1_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
-    
-    
-    if(ADC_val < 640) //< 28v
+//    print_screen("V1","");
+//    lcd_print_int(ADC_val, 1, 1, 1);
+    if(ADC_val < 700) //< 30v
     {//yes     
        print_error("V1 Voltage-Jig", "Too Low");
     }
-    
-//    while(1)
-//    {
-//        ADC_val = ADC_get_val(ADC_v1_test); //Get Vol
-//        lcd_print_int(ADC_val, 1, 1, 1);
-//        __delay_ms(100);
-//    }
-    
-//4. Mesure 24v
-    print_screen("Measuring 24V", "");
-    
-    ADC_val = ADC_get_val(ADC_24v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
-    
   
-    if(ADC_val < 533) //< 23.2v
-    {//yes
-        print_error("24V Voltage", "Too Low");
-    }
-    if(ADC_val > 590) //> 26.5v
-    {//yes
-        print_error("24V Voltage", "Too High");
-    }
-//    while(1)
-//    {
-//        ADC_val = ADC_get_val(ADC_24v_test); //Get Vol
-//        lcd_print_int(ADC_val, 1, 0b00001000, 1);
-//        __delay_ms(100);
-//    }
-    
 //5. Mesure 5v
     print_screen("Measuring 5v", "");
     
     ADC_val = ADC_get_val(ADC_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
-
+    print_screen("5v","");
+    lcd_print_int(ADC_val, 1, 1, 1);
+    
     if(ADC_val < 110) //< 4.8v
     {//yes
         print_error("5V Voltage", "Too Low");
@@ -1307,7 +1293,6 @@ void main(void)
         
 #endif        
     __delay_ms(1000);   
-        
 //8. Get voltages from pcb   
     init_uart2(); //pi
     init_uart1(); //DUT
@@ -1319,15 +1304,17 @@ void main(void)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
     //__delay_ms(2000);
-    
-    if(Data_Temp_Work_int > 622)  //>34V
+      
+   
+    if(Data_Temp_Work_int > 610)  //>34V
     {
         print_error("V1 Voltage b", "Too High");
     }
-    if(Data_Temp_Work_int < 553) //30.2
+    if(Data_Temp_Work_int < 580) //31v
     {
         print_error("V1 Voltage b", "Too Low");
     }
+    
     
 //8.2  Test V2 voltage (Battery)
     
@@ -1335,14 +1322,17 @@ void main(void)
     power_supply_k12 = 1; 
     power_supply_k11 = 1;
     //--
-    
+//    print_screen("Usart 128","");
+//    lcd_print_int(Data_Temp_Work_int, 1, 1, 1); //526
+//    while(1);
     __delay_ms(200);
     
 //    while(1)
 //    {
 //         ADC_val = ADC_get_val(ADC_v2_test); //Get Battery Voltage (factor is 627 @ 27.35v)
-//         lcd_print_int(ADC_val, 1, 0b00001000, 1);
-//         __delay_ms(1000);
+//         print_screen("Bat ADC","");
+//         lcd_print_int(ADC_val, 1, 1, 1);
+//         __delay_ms(100);
 //    }
     
     ADC_val = ADC_get_val(ADC_v2_test); //Get Battery Voltage (factor is 627 @ 27.35v)
@@ -1378,15 +1368,15 @@ void main(void)
 //        send_usart_packet_manage(129, 129); //get V2 voltage (506)
 //        Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
 //    
-//        lcd_print_int(Data_Temp_Work_int, 1, 0b00001000, 1);
+//        lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
 //        __delay_ms(1000);
 //    }       
-//        
+        
         
     send_usart_packet_manage(129, 129); //get V2 voltage (499 @ 27.35V) 
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
-    if(Data_Temp_Work_int > 516) //28.2v
+    if(Data_Temp_Work_int > 518) //28.5v
     {
         print_error("V2 SENSE", "Too High");
     }
@@ -1409,19 +1399,19 @@ void main(void)
 //    }
     
     
-    send_usart_packet_manage(130, 130); //get 24V voltage (factor - 430 @ 23.827v)
-    Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
-    //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
-    //__delay_ms(2000);
-    
-    if(Data_Temp_Work_int > 451) //25v 
-    {
-        print_error("24V SENSE", "Too High");
-    }
-    if(Data_Temp_Work_int < 416)//23.1
-    {
-        print_error("24V SENSE", "Too Low");
-    }
+//    send_usart_packet_manage(130, 130); //get 24V voltage (factor - 430 @ 23.827v)
+//    Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
+//    //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
+//    //__delay_ms(2000);
+//    
+//    if(Data_Temp_Work_int > 451) //25v 
+//    {
+//        print_error("24V SENSE", "Too High");
+//    }
+//    if(Data_Temp_Work_int < 416)//23.1
+//    {
+//        print_error("24V SENSE", "Too Low");
+//    }
     
 //8.4  Test Beam voltage
     
@@ -1432,8 +1422,9 @@ void main(void)
     send_usart_packet_manage(133, 133); //get beam in voltage no collector (1023)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
-    //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
-    //__delay_ms(2000);
+//    print_screen("Beam","");
+//    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+//    __delay_ms(2000);
     
     if(Data_Temp_Work_int < 1010)
     {
@@ -1446,7 +1437,9 @@ void main(void)
     
     send_usart_packet_manage(133, 133); //get beam in voltage with collector (22)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
+    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
     
+ 
     if(Data_Temp_Work_int > 28)
     {
         print_error("Beam Input Err", "V High");
@@ -1833,11 +1826,11 @@ void main(void)
     __delay_ms(2000);
     
     //TEST V2 VOLTAGE FOR DROP
+   
     send_usart_packet_manage(129, 129); //get V2 voltage (506)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
-    //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
-    //__delay_ms(2000);
+    __delay_ms(2000);
     
     if(Data_Temp_Work_int > 350)
     {
@@ -1890,9 +1883,11 @@ void main(void)
     send_usart_packet_manage(132, 132); //Get Motor Current Sense Voltage With Load (4 @ 110 Ohm)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
-    //lcd_print_int(Data_Temp_Work_int, 1, 0b00001000, 1);
+//    print_screen("Mot curr open","");
+//    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+//    while(1); 
     
-    if(Data_Temp_Work_int < 2)//Is there motor current flow ?
+    if(Data_Temp_Work_int < 1)//Is there motor current flow ?
     {//no
         print_error("Error Motor", "Circuit Open");
     }
@@ -1986,6 +1981,7 @@ void main(void)
     
     ADC_val = ADC_get_val(ADC_v2_test); //Get Battery Voltage (630 @ 27.4v factor = 0.04349mv / inc )
     
+    
     if(ADC_val > 641) //> 27.9v
     {
         print_error("Charge Err", "Voltage to High");
@@ -2015,18 +2011,18 @@ void main(void)
     {
         ADC_val = get_current(); //Get mA  
         
-        if(ADC_val > 500) //> mA
+        if(ADC_val > 60) //> mA
         {
             CCPR9L = 0; //SINK PWM OFF
             print_error("Charger Err", "Curr too high");
         }
         
-        lcd_print_int(ADC_val, 1, 0b00001000, 1);
+        lcd_print_int(ADC_val, 1, 1, 1);
     
         __delay_ms(100);
     }//LOOP
     
-    if(ADC_val < 200) //> mA
+    if(ADC_val < 40) //> mA
     {
             CCPR9L = 0; //SINK PWM OFF
             print_error("Charger Err", "Curr too low");
@@ -2035,7 +2031,7 @@ void main(void)
     CCPR9L = 0; //SINK PWM OFF
     __delay_ms(100); //was 100ms
     power_supply_k11 = 0;
-    power_supply_k12 = 1;
+    power_supply_k12 = 0;
     __delay_ms(400); //was 100ms
     
 //16 Send testjig passed
@@ -3694,6 +3690,9 @@ void Vout_set(int Volts) {
             break;
         case 30:
             digi_step = 101; //30v
+            break;
+        case 34:
+            digi_step = 125; //33v
             break;
         default:
             digi_step = 0;
