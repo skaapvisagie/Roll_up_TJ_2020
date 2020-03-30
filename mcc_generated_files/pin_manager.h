@@ -79,6 +79,18 @@
 #define RG2_SetAnalogMode() do { ANSELGbits.ANSG2 = 1; } while(0)
 #define RG2_SetDigitalMode()do { ANSELGbits.ANSG2 = 0; } while(0)
 
+
+#define SMXI1_SetDigitalInput()   do { TRISFbits.TRISF1 = 1; } while(0)
+#define SMXI1_SetDigitalOutput()  do { TRISFbits.TRISF1 = 0; } while(0)
+
+#define SMXI2_SetDigitalInput()   do { TRISFbits.TRISF0 = 1; } while(0)
+#define SMXI2_SetDigitalOutput()  do { TRISFbits.TRISF0 = 0; } while(0)
+
+#define SMXI3_SetDigitalInput()   do { TRISAbits.TRISA3 = 1; } while(0)
+#define SMXI3_SetDigitalOutput()  do { TRISAbits.TRISA3 = 0; } while(0)
+
+#define SMXI4_SetDigitalInput()   do { TRISAbits.TRISA2 = 1; } while(0)
+#define SMXI4_SetDigitalOutput()  do { TRISAbits.TRISA2 = 0; } while(0)
 /**
    @Param
     none

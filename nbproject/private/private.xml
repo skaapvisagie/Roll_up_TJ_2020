@@ -5,57 +5,57 @@
             <url>newmain1.c</url>
             <bookmark id="146">
                 <name/>
-                <line>592</line>
+                <line>595</line>
                 <key/>
             </bookmark>
             <bookmark id="137">
                 <name/>
-                <line>1346</line>
+                <line>1376</line>
                 <key/>
             </bookmark>
             <bookmark id="138">
                 <name/>
-                <line>1348</line>
+                <line>1378</line>
                 <key/>
             </bookmark>
             <bookmark id="139">
                 <name/>
-                <line>1355</line>
+                <line>1385</line>
                 <key/>
             </bookmark>
             <bookmark id="136">
                 <name/>
-                <line>1989</line>
+                <line>2130</line>
                 <key/>
             </bookmark>
             <bookmark id="142">
                 <name/>
-                <line>1991</line>
+                <line>2132</line>
                 <key/>
             </bookmark>
             <bookmark id="140">
                 <name/>
-                <line>1993</line>
+                <line>2134</line>
                 <key/>
             </bookmark>
             <bookmark id="141">
                 <name/>
-                <line>2000</line>
+                <line>2141</line>
                 <key/>
             </bookmark>
             <bookmark id="143">
                 <name/>
-                <line>2034</line>
+                <line>2175</line>
                 <key/>
             </bookmark>
             <bookmark id="148">
                 <name/>
-                <line>2039</line>
+                <line>2180</line>
                 <key/>
             </bookmark>
             <bookmark id="147">
                 <name/>
-                <line>2041</line>
+                <line>2182</line>
                 <key/>
             </bookmark>
         </file>
@@ -63,6 +63,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Zara%20Rose%20Coetzee/Documents/ET/Roll-up%20LOA/TJ%20code/DCBA%20Roll-Up%202017-18%20TESTJIG%20CODE/DCBA%20Roll-up%20v7.X/newmain1.c</file>
+            <file>file:/C:/Users/Zara%20Rose%20Coetzee/Documents/ET/Roll-up%20LOA/TJ%20code/DCBA%20Roll-Up%202017-18%20TESTJIG%20CODE/DCBA%20Roll-up%20v7.X/mcc_generated_files/pin_manager.h</file>
         </group>
     </open-files>
 </project-private>

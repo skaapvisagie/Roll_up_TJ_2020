@@ -15,6 +15,8 @@
 #include <xc.h>
 #include <stdlib.h>
 #include <pic.h>
+#include "mcc_generated_files/pin_manager.h"
+
 #asm
 //set mcu freq for __delay_() function
 #define _XTAL_FREQ  16000000
@@ -68,8 +70,8 @@
 
 #define CHECK_BIT(var,pos) !!((var) & (1<<(pos))) //allows us to check the bits of an int (useful for checking registers)
 
-#define pickit_rel_1_rx        LATC2 //k1
-#define pickit_rel_2_rx        LATC7 //k5
+//#define pickit_rel_1_rx        LATC2 //k1
+//#define pickit_rel_2_rx        LATC7 //k5
 
 //both of these relays are powered via k4, see bottom of board
 #define k1        LATC2 //k1
@@ -121,9 +123,10 @@
 #define mclr_reset_P10_TRIS TRISD7
 
 // Pi connections A2, A3 F0
-#define A3 RA3 //tied to pin 31 which is uart tx1, do not use
-#define A2 RA2
-#define F0 RF0
+#define SMXI_out_1 LATF1 //tied to pin 31 which is uart tx1, do not use
+#define SMXI_out_2 RF0
+#define SMXI_out_3 LATA3
+#define SMXI_out_4 RA2
 
 #define BT LATG0
 #define LIM LATG3
@@ -968,10 +971,13 @@ isr(void) {
             switch (pickit_state) 
             {
                 case pickit_start:
-                    //pickit_rel_1 = 1;
-                    //pickit_rel_2 = 1;
+#ifndef SMXI 
+                    k3 = 1;
+                    k4 = 1;
+#else
                     k1 = 1;
                     k5 = 1;
+#endif
                     pickit_timer = 500; //ms allow for relays to switch
                     pickit_state = pickit_push_button;
                 break;
@@ -1056,12 +1062,16 @@ isr(void) {
                 case pickit_error:
                     k1 = 0;
                     k5 = 0;
+                    k3 = 0;
+                    k4 = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                 break;
                 case pickit_finish:
                     k1 = 0;
                     k5 = 0;
+                    k3 = 0;
+                    k4 = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                     pickit_state = pickit_idle;
@@ -1104,12 +1114,12 @@ void main(void)
     TMR0IE = 1;
 
     //--SETUP PORTS
-    TRISA = 0b00001011; //
+    TRISA = 0b00000011; //
     TRISB = 0b00001111; //
     TRISC = 0b00011010; //
     TRISD = 0b10001111; //
     TRISE = 0b11110110; //
-    TRISF = 0b00101011; //
+    TRISF = 0b00101000; //
     TRISG = 0b11100110; // //bit 2&1=1 for uart2 usage / G1=TX G2=RX
     //
     PORTA = 0b00000000;
@@ -1128,7 +1138,7 @@ void main(void)
     ANSELB = 0b00001100; //
     ANSELD = 0b00001111; //
     ANSELE = 0b00000110; //
-    ANSELF = 0b00000001; //
+    ANSELF = 0b00000000; //
     ANSELG = 0b00000000; //
     // </editor-fold>
     power_supply_set(NONE);
@@ -1185,14 +1195,23 @@ void main(void)
     power_supply_set(AC1); //switch back to AC1   
     
     __delay_ms(500); //contact protection delay (crappy relays)
+    
+    Vout_set(12);
+    if(ADC_get_val(ADC_SMXI_5v_test) >= 100)// check if it is an SMXI board.
+    {
+        #define SMXI
+        print_screen("SMXI version ","detected");
+    }else 
+    {
+        print_screen("Local version ","detected");
+    }
+    
+    __delay_ms(1000);
+
     Vout_set(34);
      __delay_ms(500); //contact protection delay (crappy relays)
 //1b. Measure for motor short
      
-//     print_screen("K3 and K4 set", " ");
-//     k3 = 1;
-//    k4 = 1;
-//    while(1);
     
     if((Opto_motor_dir_a == 0) || (Opto_motor_dir_b == 0))
     {
@@ -1247,7 +1266,7 @@ void main(void)
     //6. Measure SMXI 5v
        print_screen("Measuring 5v", "");
 
-       ADC_val = ADC_get_val(ADC_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
+       ADC_val = ADC_get_val(ADC_SMXI_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
 
 
        if(ADC_val < 110) //< 4.8v
@@ -1302,19 +1321,29 @@ void main(void)
    //8.1  Test V1 voltage
     send_usart_packet_manage(128, 128); //get V1 voltage (574)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
-    //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
+    
     //__delay_ms(2000);
       
-   
-    if(Data_Temp_Work_int > 610)  //>34V
+#ifdef SMXI
+    if(Data_Temp_Work_int > 2420)  //>34V
+    {
+        print_error("V1 Voltage b", "Too High");
+    }
+    if(Data_Temp_Work_int < 2370) //31v
+    {
+        print_error("V1 Voltage b", "Too Low");
+    }
+#else 
+      if(Data_Temp_Work_int > 610)  //>34V
     {
         print_error("V1 Voltage b", "Too High");
     }
     if(Data_Temp_Work_int < 580) //31v
     {
         print_error("V1 Voltage b", "Too Low");
-    }
-    
+    }  
+#endif
+   
     
 //8.2  Test V2 voltage (Battery)
     
@@ -1336,6 +1365,7 @@ void main(void)
 //    }
     
     ADC_val = ADC_get_val(ADC_v2_test); //Get Battery Voltage (factor is 627 @ 27.35v)
+    
     
     if(ADC_val > 646) //> 28.2v
     {
@@ -1376,6 +1406,17 @@ void main(void)
     send_usart_packet_manage(129, 129); //get V2 voltage (499 @ 27.35V) 
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
+    
+#ifdef SMXI
+    if(Data_Temp_Work_int > 2100) //28.5v
+    {
+        print_error("V2 SENSE", "Too High");
+    }
+    if(Data_Temp_Work_int < 2000) //27.13v 
+    {
+        print_error("V2 SENSE", "Too Low");
+    }
+#else
     if(Data_Temp_Work_int > 518) //28.5v
     {
         print_error("V2 SENSE", "Too High");
@@ -1384,6 +1425,7 @@ void main(void)
     {
         print_error("V2 SENSE", "Too Low");
     }
+#endif
     //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
     //__delay_ms(2000);
     
@@ -1437,10 +1479,19 @@ void main(void)
     
     send_usart_packet_manage(133, 133); //get beam in voltage with collector (22)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
-    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
     
  
-    if(Data_Temp_Work_int > 28)
+#ifdef SMXI    
+    if(Data_Temp_Work_int > 100)
+    {
+        print_error("Beam Input Err", "V High");
+    }
+    if(Data_Temp_Work_int < 50)
+    {
+        print_error("Beam Input Err", "V Low");
+    }
+#else
+     if(Data_Temp_Work_int > 28)
     {
         print_error("Beam Input Err", "V High");
     }
@@ -1448,6 +1499,7 @@ void main(void)
     {
         print_error("Beam Input Err", "V Low");
     }
+#endif
     
     BM = 0;
     
@@ -1496,6 +1548,10 @@ void main(void)
     {//no
         print_error("Error", "Bt Input");
     }
+    
+     print_screen("Testing", "All io's high");
+ 
+  
 
 //9.1 Test Bt Input
     //print_screen("Testing", "Bt Input");
@@ -1577,6 +1633,89 @@ void main(void)
     send_usart_packet_manage(134, 1); //set ecan high
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
+    __delay_ms(10);
+    
+#ifdef SMXI
+    
+    while(1)
+    {
+        SMXI_out_1 = 1;
+        SMXI_out_2 = 1;
+        SMXI_out_3 = 1;
+        SMXI_out_4 = 1;
+        __delay_ms(1000);
+        SMXI_out_1 = 0;
+        SMXI_out_2 = 0;
+        SMXI_out_3 = 0;
+        SMXI_out_4 = 0;
+        __delay_ms(1000);
+    }
+    
+    print_screen("","");
+    send_usart_packet_manage(149, 149); ////get all io SMXI inputs data bits, Check if all them are low
+    Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
+    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+    while(1);
+
+    __delay_ms(3000);
+
+    if((Data_Temp_Work_int & 0x01) == 1) //SMXI ch 1 low
+    {
+        print_error("Error LOW", "SXMI ch 1");
+    }
+    if(Data_Temp_Work_int & 0x02) //SMXI ch 2 low
+    {
+        print_error("Error LOW", "SXMI ch 2");
+    }
+    if(Data_Temp_Work_int & 0x04) //SMXI ch 3 low
+    {
+        print_error("Error LOW", "SXMI ch 3");
+    }
+    if(Data_Temp_Work_int & 0x08) //SMXI ch 4 low
+    {
+        print_error("Error LOW", "SXMI ch 4");
+    }
+    
+    __delay_ms(10);
+    
+    SMXI_out_1 = 1;
+    SMXI_out_2 = 1;
+    SMXI_out_3 = 1;
+    SMXI_out_4 = 1;
+    
+    __delay_ms(10);
+    
+    send_usart_packet_manage(150, 150); //Test SMXI high
+    Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
+    //lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+    //while(1);
+    if(Data_Temp_Work_int & 0x01) //SMXI ch 1 high
+    {
+        print_error("Error High", "SXMI ch 1");
+    }
+    if(Data_Temp_Work_int & 0x02) //SMXI ch 2 high
+    {
+        print_error("Error High", "SXMI ch 2");
+    }
+    if(Data_Temp_Work_int & 0x04) //SMXI ch 3 high
+    {
+        print_error("Error High", "SXMI ch 3");
+    }
+    if(Data_Temp_Work_int & 0x08) //SMXI ch 4 high
+    {
+        print_error("Error High", "SXMI ch 4");
+    }
+    
+    
+    SMXI_out_1 = 0;
+    SMXI_out_2 = 0;
+    SMXI_out_3 = 0;
+    SMXI_out_4 = 0;
+    
+    
+    print_screen("SMXI OK","");
+    __delay_ms(1000);
+#endif
     __delay_ms(10);
     
 //10 Test pcb Up button 
@@ -1829,7 +1968,8 @@ void main(void)
    
     send_usart_packet_manage(129, 129); //get V2 voltage (506)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
-    
+//    lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+//    while(1);
     __delay_ms(2000);
     
     if(Data_Temp_Work_int > 350)
@@ -1947,6 +2087,7 @@ void main(void)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
       
 //14. Test RF 
+#ifndef SMXI
     print_screen("Testing", "Rx System");
     
     Remote_Tx = 1;
@@ -1963,7 +2104,7 @@ void main(void)
     }
          
     Remote_Tx = 0;
-    
+#endif  
 //15 Test Battery Charge Current
     print_screen("Testing Charger", "");
     
