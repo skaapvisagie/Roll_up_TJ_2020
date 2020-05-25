@@ -82,6 +82,8 @@
 
 #define SMXI1_SetDigitalInput()   do { TRISFbits.TRISF1 = 1; } while(0)
 #define SMXI1_SetDigitalOutput()  do { TRISFbits.TRISF1 = 0; } while(0)
+#define SMXI1_SetHigh()           do { LATFbits.LATF1 = 1; } while(0)
+#define SMXI1_LowLow()           do { LATFbits.LATF1 = 0; } while(0)
 
 #define SMXI2_SetDigitalInput()   do { TRISFbits.TRISF0 = 1; } while(0)
 #define SMXI2_SetDigitalOutput()  do { TRISFbits.TRISF0 = 0; } while(0)

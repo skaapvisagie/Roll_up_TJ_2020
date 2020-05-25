@@ -7,7 +7,7 @@
 //
 //Author : Leon Damaskinos
 
-//#define PGM_Enable // comment out for programming disable
+#define PGM_Enable // comment out for programming disable
 //#define Buzz_disable // comment out for buzzer disable on TJ
 //#define Board_identifier // comment out for identifier disable
 
@@ -84,15 +84,7 @@
 #define ch1_tx      LATG2 //blue wire, channel 1
 
 #define pickit_button_relay LATC6 //c7 and c6 tied together on rhs of Q4 on testjig
-#ifdef SMXI
-#define pickit_LED_blue     RE4
-#define pickit_LED_green    RE6
-#define pickit_LED_red      RE5
-#else
-#define pickit_LED_blue     RE7
-#define pickit_LED_green    RB1
-#define pickit_LED_red      RB0
-#endif
+
 
 //#define CH2_high_current_K13_P10 LATB5-
 //#define CH3_high_current_K6_P13 LATA6
@@ -123,9 +115,9 @@
 #define mclr_reset_P10_TRIS TRISD7
 
 // Pi connections A2, A3 F0
-#define SMXI_out_1 LATF1 //tied to pin 31 which is uart tx1, do not use
+#define SMXI_out_1 RF1 //tied to pin 31 which is uart tx1, do not use
 #define SMXI_out_2 RF0
-#define SMXI_out_3 LATA3
+#define SMXI_out_3 RA3
 #define SMXI_out_4 RA2
 
 #define BT LATG0
@@ -153,8 +145,21 @@
 #define LIM_IN 5
 #define BT_IN 6
 
+
+
+#define pickit_LED_blue_SMXI    RE4
+#define pickit_LED_green_SMIX    RE6
+#define pickit_LED_red_SMXI     RE5
+
+#define pickit_LED_blue_L     RE7
+#define pickit_LED_green_L   RB1
+#define pickit_LED_red_L      RB0
+
+
+
 // </editor-fold>
 
+unsigned char SMXI = 0;
 // <editor-fold defaultstate="collapsed" desc="function declarations">
 void i2c_Write(unsigned char data);
 void i2c_Start(void);
@@ -283,6 +288,7 @@ enum {
 enum {
     pickit_finish, pickit_start, pickit_push_button, pgm_start_delay,  pickit_busy, pickit_error, pickit_idle
 } pickit_state;
+
 
 //adc channel select
 #define ADC_current_sink    0b01001101//channel 19 (channels are bit shifted up by two bits and padded with 11 to set Go_nDone and ADC_on)
@@ -971,13 +977,20 @@ isr(void) {
             switch (pickit_state) 
             {
                 case pickit_start:
-#ifndef SMXI 
-                    k3 = 1;
-                    k4 = 1;
-#else
-                    k1 = 1;
-                    k5 = 1;
-#endif
+                    if(SMXI)
+                    {
+                        k3 = 1;
+                        k4 = 1;
+                        k1 = 0;
+                        k5 = 0;
+                    }
+                    else
+                    {
+                        k1 = 1;
+                        k5 = 1;
+                        k4 = 0;
+                        k3 = 0;
+                    }
                     pickit_timer = 500; //ms allow for relays to switch
                     pickit_state = pickit_push_button;
                 break;
@@ -997,41 +1010,73 @@ isr(void) {
                 break;        
                 
                 case pickit_busy:
-                    
+                    pickit_button_relay = 0;
                     pickit_pgm_timeout++;
                     if (pickit_pgm_timeout > 8000) //ms  
                     {
                         pickit_state = pickit_finish;;
                     }
                     //-- error?
-                    if((pickit_LED_blue == 0)&&(pickit_LED_red == 1))
+                    if(SMXI)
                     {
-                        pickit_all_counter++;
-                        
-//                         if (pickit_all_counter > 150) //150ms
-//                        {
-                        pickit_state = pickit_error;
-//                        }
- 
-                    }
-                    else
-                    {
-                        pickit_all_counter = 0;
-                    }
-                    //-- pass?
-                    if((pickit_LED_blue == 0)&&(pickit_LED_red == 0))
-                    {
-                        pickit_red_counter++;
-                        if (pickit_red_counter > 400) //ms
+                        if((pickit_LED_blue_SMXI == 0)&&(pickit_LED_red_SMXI == 1))
                         {
-                            pickit_state = pickit_finish;
+                            pickit_all_counter++;
+
+    //                         if (pickit_all_counter > 150) //150ms
+    //                        {
+                            pickit_state = pickit_error;
+    //                        }
+
+                        }
+                        else
+                        {
+                            pickit_all_counter = 0;
+                        }
+                        //-- pass?
+                        if((pickit_LED_blue_SMXI == 0)&&(pickit_LED_red_SMXI == 0))
+                        {
+                            pickit_red_counter++;
+                            if (pickit_red_counter > 400) //ms
+                            {
+                                pickit_state = pickit_finish;
+                            }
+                        }
+                        else
+                        {
+                            pickit_red_counter = 0;
                         }
                     }
                     else
                     {
-                        pickit_red_counter = 0;
+                        if((pickit_LED_blue_L == 0)&&(pickit_LED_red_L == 1))
+                        {
+                            pickit_all_counter++;
+
+    //                         if (pickit_all_counter > 150) //150ms
+    //                        {
+                            pickit_state = pickit_error;
+    //                        }
+
+                        }
+                        else
+                        {
+                            pickit_all_counter = 0;
+                        }
+                        //-- pass?
+                        if((pickit_LED_blue_L == 0)&&(pickit_LED_red_L == 0))
+                        {
+                            pickit_red_counter++;
+                            if (pickit_red_counter > 400) //ms
+                            {
+                                pickit_state = pickit_finish;
+                            }
+                        }
+                        else
+                        {
+                            pickit_red_counter = 0;
+                        }
                     }
-                    
 //                    if (pickit_LED_red == 1) 
 //                    {
 //                        pickit_red_counter++;
@@ -1064,6 +1109,7 @@ isr(void) {
                     k5 = 0;
                     k3 = 0;
                     k4 = 0;
+                    pickit_button_relay = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                 break;
@@ -1072,6 +1118,7 @@ isr(void) {
                     k5 = 0;
                     k3 = 0;
                     k4 = 0;
+                    pickit_button_relay = 0;
                     //pickit_rel_1 = 0;
                     //pickit_rel_2 = 0;
                     pickit_state = pickit_idle;
@@ -1119,7 +1166,7 @@ void main(void)
     TRISC = 0b00011010; //
     TRISD = 0b10001111; //
     TRISE = 0b11110110; //
-    TRISF = 0b00101000; //
+    TRISF = 0b00101100; //
     TRISG = 0b11100110; // //bit 2&1=1 for uart2 usage / G1=TX G2=RX
     //
     PORTA = 0b00000000;
@@ -1141,6 +1188,7 @@ void main(void)
     ANSELF = 0b00000000; //
     ANSELG = 0b00000000; //
     // </editor-fold>
+    
     power_supply_set(NONE);
 
     init_ADC();
@@ -1168,8 +1216,9 @@ void main(void)
     //__delay_ms(500);
     //buzzer = 0;
     
+     pickit_state = pickit_idle;
     print_screen("DCBA Roll-up TJ", "-> Insert PCB & Start");  //waiting for pi to power up and run script 
-    
+    pickit_button_relay = 0; 
     if(board_detect == 0) 
     { // if board not detected change this function. 2.6v on pin when no board, 1.8v when board present
         print_screen("Board","Detected");
@@ -1199,13 +1248,16 @@ void main(void)
     Vout_set(12);
     if(ADC_get_val(ADC_SMXI_5v_test) >= 100)// check if it is an SMXI board.
     {
-        #define SMXI
-        print_screen("SMXI version ","detected");
-    }else 
+       SMXI = 1;
+       print_screen("SMXI version ","detected");
+    }
+    else if(ADC_get_val(ADC_5v_test) >= 100)
     {
+        SMXI = 0;
         print_screen("Local version ","detected");
     }
-    
+    else 
+        print_error("Error", "Check 5v");
     __delay_ms(1000);
 
     Vout_set(34);
@@ -1255,6 +1307,7 @@ void main(void)
     
     if(ADC_val < 110) //< 4.8v
     {//yes
+        
         print_error("5V Voltage", "Too Low");
     }
     if(ADC_val > 133) //> 5.8v
@@ -1262,23 +1315,24 @@ void main(void)
         print_error("5V Voltage", "Too High");
     }
  
-#ifdef SMXI
+ if(SMXI)
+ {
     //6. Measure SMXI 5v
-       print_screen("Measuring 5v", "");
+       print_screen("Measuring 5v", "SMXI");
 
        ADC_val = ADC_get_val(ADC_SMXI_5v_test); //Get Voltage (calibrated 31.3v @ 719) factor = 04353v / inc 
 
 
        if(ADC_val < 110) //< 4.8v
        {//yes
-           print_error("5V Voltage", "Too Low");
+           print_error("5V SMXI", "Too Low");
        }
        if(ADC_val > 133) //> 5.8v
        {//yes
-           print_error("5V Voltage", "Too High");
+           print_error("5V SMXI", "Too High");
        }
        
-#endif
+ }
 //    while(1)
 //    {
 //        ADC_val = ADC_get_val(ADC_5v_test); //Get Vol
@@ -1309,12 +1363,11 @@ void main(void)
         }
         
         print_screen("Programming", "Done");
-        
 #endif        
     __delay_ms(1000);   
 //8. Get voltages from pcb   
-    init_uart2(); //pi
-    init_uart1(); //DUT
+    init_uart2(); //DUT
+    //init_uart1(); //DUT
     //print_screen("UART Comms", "DUT Pinging");
     __delay_ms(300);
     
@@ -1324,25 +1377,31 @@ void main(void)
     
     //__delay_ms(2000);
       
-#ifdef SMXI
-    if(Data_Temp_Work_int > 2420)  //>34V
-    {
-        print_error("V1 Voltage b", "Too High");
-    }
-    if(Data_Temp_Work_int < 2370) //31v
-    {
-        print_error("V1 Voltage b", "Too Low");
-    }
-#else 
-      if(Data_Temp_Work_int > 610)  //>34V
-    {
-        print_error("V1 Voltage b", "Too High");
-    }
-    if(Data_Temp_Work_int < 580) //31v
-    {
-        print_error("V1 Voltage b", "Too Low");
-    }  
-#endif
+   if(SMXI)
+   {
+        if(Data_Temp_Work_int > 2420)  //>34V
+        {
+            print_error("V1 Voltage b", "Too High");
+        }
+        if(Data_Temp_Work_int < 2370) //31v
+        {
+            print_error("V1 Voltage b", "Too Low");
+        }
+   }
+   else
+   {
+       lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+        __delay_ms(1000);
+        if(Data_Temp_Work_int > 1000)  //>34V
+        {
+            print_error("V1 Voltage b", "Too High");
+        }
+        if(Data_Temp_Work_int < 580) //31v
+        {
+            print_error("V1 Voltage b", "Too Low");
+        }
+   }
+
    
     
 //8.2  Test V2 voltage (Battery)
@@ -1365,6 +1424,7 @@ void main(void)
 //    }
     
     ADC_val = ADC_get_val(ADC_v2_test); //Get Battery Voltage (factor is 627 @ 27.35v)
+    
     
     
     if(ADC_val > 646) //> 28.2v
@@ -1407,25 +1467,31 @@ void main(void)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
     
-#ifdef SMXI
-    if(Data_Temp_Work_int > 2100) //28.5v
+    if(SMXI)
     {
-        print_error("V2 SENSE", "Too High");
+        if(Data_Temp_Work_int > 2100) //28.5v
+        {
+            print_error("V2 SENSE", "Too High");
+        }
+        if(Data_Temp_Work_int < 2000) //27.13v 
+        {
+            print_error("V2 SENSE", "Too Low");
+        }
     }
-    if(Data_Temp_Work_int < 2000) //27.13v 
+    else
     {
-        print_error("V2 SENSE", "Too Low");
+        lcd_print_int(ADC_val, 1, 1, 1);
+        __delay_ms(1000);
+        
+        if(Data_Temp_Work_int > 700) //28.5v
+        {
+            print_error("V2 SENSE", "Too High");
+        }
+        if(Data_Temp_Work_int < 495) //27.13v 
+        {
+            print_error("V2 SENSE", "Too Low");
+        }
     }
-#else
-    if(Data_Temp_Work_int > 518) //28.5v
-    {
-        print_error("V2 SENSE", "Too High");
-    }
-    if(Data_Temp_Work_int < 495) //27.13v 
-    {
-        print_error("V2 SENSE", "Too Low");
-    }
-#endif
     //lcd_print_int(Data_Temp_Work, 1, 0b00001000, 1);
     //__delay_ms(2000);
     
@@ -1481,25 +1547,28 @@ void main(void)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     
  
-#ifdef SMXI    
-    if(Data_Temp_Work_int > 100)
+    if(SMXI)
     {
-        print_error("Beam Input Err", "V High");
+        if(Data_Temp_Work_int > 100)
+        {
+            print_error("Beam Input Err", "V High");
+        }
+        if(Data_Temp_Work_int < 50)
+        {
+            print_error("Beam Input Err", "V Low");
+        }
     }
-    if(Data_Temp_Work_int < 50)
+    else
     {
-        print_error("Beam Input Err", "V Low");
+       if(Data_Temp_Work_int > 28)
+       {
+           print_error("Beam Input Err", "V High");
+       }
+       if(Data_Temp_Work_int < 18)
+       {
+           print_error("Beam Input Err", "V Low");
+       }
     }
-#else
-     if(Data_Temp_Work_int > 28)
-    {
-        print_error("Beam Input Err", "V High");
-    }
-    if(Data_Temp_Work_int < 18)
-    {
-        print_error("Beam Input Err", "V Low");
-    }
-#endif
     
     BM = 0;
     
@@ -1635,31 +1704,24 @@ void main(void)
     
     __delay_ms(10);
     
-#ifdef SMXI
+if(SMXI)
+{
+   
+    SMXI_out_1 = 0;
+    SMXI_out_2 = 0;
+    SMXI_out_3 = 0;
+    SMXI_out_4 = 0;
+    __delay_ms(10);
     
-    while(1)
-    {
-        SMXI_out_1 = 1;
-        SMXI_out_2 = 1;
-        SMXI_out_3 = 1;
-        SMXI_out_4 = 1;
-        __delay_ms(1000);
-        SMXI_out_1 = 0;
-        SMXI_out_2 = 0;
-        SMXI_out_3 = 0;
-        SMXI_out_4 = 0;
-        __delay_ms(1000);
-    }
     
     print_screen("","");
     send_usart_packet_manage(149, 149); ////get all io SMXI inputs data bits, Check if all them are low
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
-    while(1);
 
     __delay_ms(3000);
 
-    if((Data_Temp_Work_int & 0x01) == 1) //SMXI ch 1 low
+    if(Data_Temp_Work_int & 0x01) //SMXI ch 1 low
     {
         print_error("Error LOW", "SXMI ch 1");
     }
@@ -1683,25 +1745,25 @@ void main(void)
     SMXI_out_3 = 1;
     SMXI_out_4 = 1;
     
-    __delay_ms(10);
+    __delay_ms(1000);
     
     send_usart_packet_manage(150, 150); //Test SMXI high
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
     //lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
     //while(1);
-    if(Data_Temp_Work_int & 0x01) //SMXI ch 1 high
+    if(!(Data_Temp_Work_int & 0x01)) //SMXI ch 1 high
     {
         print_error("Error High", "SXMI ch 1");
     }
-    if(Data_Temp_Work_int & 0x02) //SMXI ch 2 high
+    if(!(Data_Temp_Work_int & 0x02)) //SMXI ch 2 high
     {
         print_error("Error High", "SXMI ch 2");
     }
-    if(Data_Temp_Work_int & 0x04) //SMXI ch 3 high
+    if(!(Data_Temp_Work_int & 0x04)) //SMXI ch 3 high
     {
         print_error("Error High", "SXMI ch 3");
     }
-    if(Data_Temp_Work_int & 0x08) //SMXI ch 4 high
+    if(!(Data_Temp_Work_int & 0x08)) //SMXI ch 4 high
     {
         print_error("Error High", "SXMI ch 4");
     }
@@ -1715,7 +1777,7 @@ void main(void)
     
     print_screen("SMXI OK","");
     __delay_ms(1000);
-#endif
+}
     __delay_ms(10);
     
 //10 Test pcb Up button 
@@ -2087,7 +2149,8 @@ void main(void)
     Data_Temp_Work_int = receive_data_bytes(1000); //ms - set timeout for first received byte + print error on timeout or data corruption
       
 //14. Test RF 
-#ifndef SMXI
+if(!SMXI)
+{
     print_screen("Testing", "Rx System");
     
     Remote_Tx = 1;
@@ -2104,7 +2167,7 @@ void main(void)
     }
          
     Remote_Tx = 0;
-#endif  
+} 
 //15 Test Battery Charge Current
     print_screen("Testing Charger", "");
     
@@ -2203,7 +2266,7 @@ void main(void)
     
     
 
-//<editor-fold defaultstate="collapsed" desc="Testing Murray old">
+ ///<editor-fold defaultstate="collapsed" desc="Testing Murray old">
 //   
 //    //8.1 init comms
 //    init_uart2(); //pi
@@ -3177,7 +3240,7 @@ void print_error(const unsigned char *top, const unsigned char *bottom) //A func
 //    CH2_high_current_K13_P10 = 0;
 //    CH3_high_current_K6_P13 = 0;
     RF_out = 0;
-    debug_fast_tx(12345);
+    //debug_fast_tx(12345);
     buzz_one(1000);
     while (1) 
     {

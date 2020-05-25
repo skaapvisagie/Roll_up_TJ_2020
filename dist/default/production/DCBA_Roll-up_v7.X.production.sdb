@@ -3,15 +3,15 @@
 [d edition pro ]
 [d chip 16F1527 ]
 [d frameptr 6 ]
-"281 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
-[e E3705 . `uc
+"286 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+[e E3706 . `uc
 current_sink_off 0
 current_sink_on 1
 sampling_ADC 2
 updating_PWM 3
 ]
-"285
-[e E3711 . `uc
+"290
+[e E3712 . `uc
 pickit_finish 0
 pickit_start 1
 pickit_push_button 2
@@ -38,81 +38,79 @@ pickit_idle 6
 [v ___wmul __wmul `(ui  1 e 2 0 ]
 "4 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\Umul8.c
 [v ___bmul __bmul `(uc  1 e 1 0 ]
-"424 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"430 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _EUSART1_Write EUSART1_Write `(v  1 e 0 0 ]
-"436
+"442
 [v _send_usart_packet_manage send_usart_packet_manage `(v  1 e 0 0 ]
-"463
+"469
 [v _manage_read_byte manage_read_byte `(uc  1 e 1 0 ]
-"500
+"506
 [v _receive_data_bytes receive_data_bytes `(ui  1 e 2 0 ]
-"946
+"952
 [v _isr isr `II(v  1 e 0 0 ]
-"1106
+"1153
 [v _main main `(v  1 e 0 0 ]
-"2706
+"2769
 [v _buzz_one buzz_one `(v  1 e 0 0 ]
-"2718
+"2781
 [v _i2c_Start i2c_Start `(v  1 e 0 0 ]
-"2726
+"2789
 [v _i2c_Write i2c_Write `(v  1 e 0 0 ]
-"2732
+"2795
 [v _i2c_Stop i2c_Stop `(v  1 e 0 0 ]
-"2738
+"2801
 [v _i2c_Write_string i2c_Write_string `(v  1 e 0 0 ]
-"2751
+"2814
 [v _i2c_write_char i2c_write_char `(v  1 e 0 0 ]
-"2760
+"2823
 [v _init_i2c_lcd_5v init_i2c_lcd_5v `(v  1 e 0 0 ]
-"2804
+"2867
 [v _clear_lcd clear_lcd `(v  1 e 0 0 ]
-"2813
+"2876
 [v _i2c_first_line i2c_first_line `(v  1 e 0 0 ]
-"2822
+"2885
 [v _i2c_second_line i2c_second_line `(v  1 e 0 0 ]
-"2831
+"2894
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 0 0 ]
-"3086
+"3149
 [v _ten_thou_conv ten_thou_conv `(v  1 e 0 0 ]
-"3173
+"3236
 [v _print_error print_error `(v  1 e 0 0 ]
-"3196
+"3259
 [v _print_screen print_screen `(v  1 e 0 0 ]
-"3333
+"3396
 [v _lcd_createChar lcd_createChar `(v  1 e 0 0 ]
-"3402
+"3465
 [v _lcd_print_int lcd_print_int `(v  1 e 0 0 ]
-"3445
-[v _init_uart1 init_uart1 `(v  1 e 0 0 ]
-"3455
+"3518
 [v _init_uart2 init_uart2 `(v  1 e 0 0 ]
-"3488
+"3551
 [v _send_uart2 send_uart2 `(v  1 e 0 0 ]
-"3521
+"3584
 [v _get_rollup get_rollup `(v  1 e 0 0 ]
-"3531
+"3594
 [v _uart_reset uart_reset `(v  1 e 0 0 ]
-"3606
+"3669
 [v _uart_receive_four uart_receive_four `(uc  1 e 1 0 ]
-"3653
+"3716
 [v _init_i2c init_i2c `(v  1 e 0 0 ]
-"3663
+"3726
 [v _init_ADC init_ADC `(v  1 e 0 0 ]
-"3683
+"3746
 [v _ADC_to_mv_DUT ADC_to_mv_DUT `(ui  1 e 2 0 ]
-"3689
+"3752
 [v _ADC_get_val ADC_get_val `(ui  1 e 2 0 ]
-"3728
+"3791
 [v _init_current_sink init_current_sink `(v  1 e 0 0 ]
-"3741
+"3804
 [v _power_supply_set power_supply_set `(v  1 e 0 0 ]
-"3794
+"3857
 [v _get_current get_current `(ui  1 e 2 0 ]
-"3808
+"3871
 [v _Vout_set Vout_set `(v  1 e 0 0 ]
-"3850
+"3913
 [v _digitalpot digitalpot `(v  1 e 0 0 ]
-"3859
+"3922
 [v _debug_fast_tx debug_fast_tx `(v  1 e 0 0 ]
 [s S83 . 1 `uc 1 IOCIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
@@ -174,7 +172,7 @@ pickit_idle 6
 [v _TRISD TRISD `VEuc  1 e 1 @143 ]
 "1549
 [v _TRISE TRISE `VEuc  1 e 1 @144 ]
-[s S421 . 1 `uc 1 TMR1IE 1 0 :1:0 
+[s S420 . 1 `uc 1 TMR1IE 1 0 :1:0 
 `uc 1 TMR2IE 1 0 :1:1 
 `uc 1 CCP1IE 1 0 :1:2 
 `uc 1 SSP1IE 1 0 :1:3 
@@ -184,13 +182,13 @@ pickit_idle 6
 `uc 1 TMR1GIE 1 0 :1:7 
 ]
 "1633
-[s S430 . 1 `uc 1 . 1 0 :3:0 
+[s S429 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 SSPIE 1 0 :1:3 
 `uc 1 TXIE 1 0 :1:4 
 `uc 1 RCIE 1 0 :1:5 
 ]
-[u S435 . 1 `S421 1 . 1 0 `S430 1 . 1 0 ]
-[v _PIE1bits PIE1bits `VES435  1 e 1 @145 ]
+[u S434 . 1 `S420 1 . 1 0 `S429 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES434  1 e 1 @145 ]
 "1879
 [v _OPTION_REG OPTION_REG `VEuc  1 e 1 @149 ]
 "2075
@@ -201,12 +199,12 @@ pickit_idle 6
 [v _ADRESH ADRESH `VEuc  1 e 1 @156 ]
 "2238
 [v _ADCON0 ADCON0 `VEuc  1 e 1 @157 ]
-[s S384 . 1 `uc 1 ADON 1 0 :1:0 
+[s S383 . 1 `uc 1 ADON 1 0 :1:0 
 `uc 1 GO_nDONE 1 0 :1:1 
 `uc 1 CHS 1 0 :5:2 
 ]
 "2263
-[s S388 . 1 `uc 1 . 1 0 :1:0 
+[s S387 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 ADGO 1 0 :1:1 
 `uc 1 CHS0 1 0 :1:2 
 `uc 1 CHS1 1 0 :1:3 
@@ -214,11 +212,11 @@ pickit_idle 6
 `uc 1 CHS3 1 0 :1:5 
 `uc 1 CHS4 1 0 :1:6 
 ]
-[s S396 . 1 `uc 1 . 1 0 :1:0 
+[s S395 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 GO 1 0 :1:1 
 ]
-[u S399 . 1 `S384 1 . 1 0 `S388 1 . 1 0 `S396 1 . 1 0 ]
-[v _ADCON0bits ADCON0bits `VES399  1 e 1 @157 ]
+[u S398 . 1 `S383 1 . 1 0 `S387 1 . 1 0 `S395 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES398  1 e 1 @157 ]
 "2317
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
 "2727
@@ -267,7 +265,7 @@ pickit_idle 6
 [v _SSP1ADD SSP1ADD `VEuc  1 e 1 @530 ]
 "4228
 [v _SSP1STAT SSP1STAT `VEuc  1 e 1 @532 ]
-[s S299 . 1 `uc 1 BF 1 0 :1:0 
+[s S298 . 1 `uc 1 BF 1 0 :1:0 
 `uc 1 UA 1 0 :1:1 
 `uc 1 R_nW 1 0 :1:2 
 `uc 1 S 1 0 :1:3 
@@ -277,13 +275,13 @@ pickit_idle 6
 `uc 1 SMP 1 0 :1:7 
 ]
 "4250
-[u S308 . 1 `S299 1 . 1 0 ]
-[v _SSP1STATbits SSP1STATbits `VES308  1 e 1 @532 ]
+[u S307 . 1 `S298 1 . 1 0 ]
+[v _SSP1STATbits SSP1STATbits `VES307  1 e 1 @532 ]
 "4349
 [v _SSP1CON1 SSP1CON1 `VEuc  1 e 1 @533 ]
 "4552
 [v _SSP1CON2 SSP1CON2 `VEuc  1 e 1 @534 ]
-[s S277 . 1 `uc 1 SEN 1 0 :1:0 
+[s S276 . 1 `uc 1 SEN 1 0 :1:0 
 `uc 1 RSEN 1 0 :1:1 
 `uc 1 PEN 1 0 :1:2 
 `uc 1 RCEN 1 0 :1:3 
@@ -293,8 +291,8 @@ pickit_idle 6
 `uc 1 GCEN 1 0 :1:7 
 ]
 "4574
-[u S286 . 1 `S277 1 . 1 0 ]
-[v _SSP1CON2bits SSP1CON2bits `VES286  1 e 1 @534 ]
+[u S285 . 1 `S276 1 . 1 0 ]
+[v _SSP1CON2bits SSP1CON2bits `VES285  1 e 1 @534 ]
 "5103
 [v _PORTF PORTF `VEuc  1 e 1 @652 ]
 "5164
@@ -347,8 +345,6 @@ pickit_idle 6
 [v _CCP9CON CCP9CON `VEuc  1 e 1 @1564 ]
 "8916
 [v _GIE GIE `VEb  1 e 0 @95 ]
-"8998
-[v _LATA3 LATA3 `VEb  1 e 0 @2147 ]
 "9004
 [v _LATA6 LATA6 `VEb  1 e 0 @2150 ]
 "9006
@@ -379,8 +375,8 @@ pickit_idle 6
 [v _LATD6 LATD6 `VEb  1 e 0 @2174 ]
 "9054
 [v _LATD7 LATD7 `VEb  1 e 0 @2175 ]
-"9074
-[v _LATF1 LATF1 `VEb  1 e 0 @7265 ]
+"9080
+[v _LATF4 LATF4 `VEb  1 e 0 @7268 ]
 "9086
 [v _LATF7 LATF7 `VEb  1 e 0 @7271 ]
 "9088
@@ -395,6 +391,8 @@ pickit_idle 6
 [v _RA1 RA1 `VEb  1 e 0 @97 ]
 "9122
 [v _RA2 RA2 `VEb  1 e 0 @98 ]
+"9124
+[v _RA3 RA3 `VEb  1 e 0 @99 ]
 "9126
 [v _RA4 RA4 `VEb  1 e 0 @100 ]
 "9128
@@ -405,10 +403,16 @@ pickit_idle 6
 [v _RC2IF RC2IF `VEb  1 e 0 @165 ]
 "9196
 [v _RE0 RE0 `VEb  1 e 0 @128 ]
+"9204
+[v _RE4 RE4 `VEb  1 e 0 @132 ]
+"9206
+[v _RE5 RE5 `VEb  1 e 0 @133 ]
 "9210
 [v _RE7 RE7 `VEb  1 e 0 @135 ]
 "9212
 [v _RF0 RF0 `VEb  1 e 0 @5216 ]
+"9214
+[v _RF1 RF1 `VEb  1 e 0 @5217 ]
 "9216
 [v _RF2 RF2 `VEb  1 e 0 @5218 ]
 "9234
@@ -423,184 +427,177 @@ pickit_idle 6
 [v _TRISC4 TRISC4 `VEb  1 e 0 @1140 ]
 "9580
 [v _TRISG0 TRISG0 `VEb  1 e 0 @6248 ]
-"285 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
-[v _pickit_state pickit_state `E3711  1 e 1 0 ]
-"367
+"162 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+[v _SMXI SMXI `uc  1 e 1 0 ]
+"290
+[v _pickit_state pickit_state `E3712  1 e 1 0 ]
+"373
 [v _usart_receive_state_main usart_receive_state_main `uc  1 e 1 0 ]
-"378
+"384
 [v _usart_fault_state usart_fault_state `uc  1 e 1 0 ]
-"391
+"397
 [v _usart_fault_flag usart_fault_flag `VEb  1 e 0 0 ]
-"394
+"400
 [v _ten_thou ten_thou `uc  1 e 1 0 ]
 [v _thou thou `uc  1 e 1 0 ]
 [v _hund hund `uc  1 e 1 0 ]
 [v _ten ten `uc  1 e 1 0 ]
 [v _unit unit `uc  1 e 1 0 ]
-"395
+"401
 [v _uart_buff_work_recieve uart_buff_work_recieve `[5]uc  1 e 5 0 ]
-"396
+"402
 [v _uart_receive_timer uart_receive_timer `VEi  1 e 2 0 ]
 [v _motor_direction_timer motor_direction_timer `VEi  1 e 2 0 ]
-"397
+"403
 [v _pickit_timer pickit_timer `VEui  1 e 2 0 ]
 [v _pickit_all_counter pickit_all_counter `VEui  1 e 2 0 ]
 [v _pickit_pgm_timeout pickit_pgm_timeout `VEui  1 e 2 0 ]
 [v _usart_timer usart_timer `VEui  1 e 2 0 ]
-"398
+"404
 [v _current_sink_timer current_sink_timer `VEui  1 e 2 0 ]
 [v _testjig_timer testjig_timer `VEui  1 e 2 0 ]
-"400
+"406
 [v _one_second_timer one_second_timer `VEui  1 e 2 0 ]
-"401
+"407
 [v _buzz_timer buzz_timer `VEui  1 e 2 0 ]
-"402
+"408
 [v _ADC_cur_sink_val ADC_cur_sink_val `VEui  1 e 2 0 ]
-"403
+"409
 [v _curent_sink_val curent_sink_val `VEui  1 e 2 0 ]
 [v _current_sink_stable current_sink_stable `VEui  1 e 2 0 ]
-"405
+"411
 [v _ADC_val ADC_val `ui  1 e 2 0 ]
-"407
+"413
 [v _voltage_i voltage_i `ui  1 e 2 0 ]
 [v _Data_Temp_Work_int Data_Temp_Work_int `ui  1 e 2 0 ]
-"408
+"414
 [v _pickit_red_counter pickit_red_counter `ui  1 e 2 0 ]
-"410
+"416
 [v _tj_timer tj_timer `ui  1 e 2 0 ]
-"417
+"423
 [v _lower lower `ui  1 e 2 0 ]
-"418
+"424
 [v _higher higher `ui  1 e 2 0 ]
-"1106
+"1153
 [v _main main `(v  1 e 0 0 ]
 {
-"2630
+"2693
 } 0
-"436
+"442
 [v _send_usart_packet_manage send_usart_packet_manage `(v  1 e 0 0 ]
 {
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 wreg ]
-"438
+"444
 [v send_usart_packet_manage@checksum_send_work checksum_send_work `ui  1 a 2 11 ]
-"439
+"445
 [v send_usart_packet_manage@data_low_byte_3 data_low_byte_3 `uc  1 a 1 10 ]
 [v send_usart_packet_manage@data_high_byte_2 data_high_byte_2 `uc  1 a 1 9 ]
 [v send_usart_packet_manage@checksum_low_byte_5 checksum_low_byte_5 `uc  1 a 1 7 ]
 [v send_usart_packet_manage@checksum_high_byte_4 checksum_high_byte_4 `uc  1 a 1 6 ]
-"436
+"442
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 wreg ]
 [v send_usart_packet_manage@Data_carry Data_carry `ui  1 p 2 3 ]
-"442
+"448
 [v send_usart_packet_manage@command_byte_1 command_byte_1 `uc  1 a 1 8 ]
-"461
+"467
 } 0
-"424
+"430
 [v _EUSART1_Write EUSART1_Write `(v  1 e 0 0 ]
 {
 [v EUSART1_Write@txData txData `uc  1 a 1 wreg ]
 [v EUSART1_Write@txData txData `uc  1 a 1 wreg ]
 [v EUSART1_Write@txData txData `uc  1 a 1 2 ]
-"434
+"440
 } 0
-"500
+"506
 [v _receive_data_bytes receive_data_bytes `(ui  1 e 2 0 ]
 {
-"503
+"509
 [v receive_data_bytes@usart_validation_work usart_validation_work `ui  1 a 2 24 ]
 [v receive_data_bytes@data_int_value data_int_value `ui  1 a 2 17 ]
 [v receive_data_bytes@usart_checksum usart_checksum `ui  1 a 2 15 ]
-"502
+"508
 [v receive_data_bytes@data_low_byte data_low_byte `uc  1 a 1 23 ]
 [v receive_data_bytes@data_high_byte data_high_byte `uc  1 a 1 22 ]
 [v receive_data_bytes@command_byte command_byte `uc  1 a 1 21 ]
 [v receive_data_bytes@checksum_low_byte checksum_low_byte `uc  1 a 1 20 ]
 [v receive_data_bytes@checksum_high_byte checksum_high_byte `uc  1 a 1 19 ]
-"500
+"506
 [v receive_data_bytes@time_out_first_byte time_out_first_byte `ui  1 p 2 7 ]
-"939
+"945
 } 0
-"3173
+"3236
 [v _print_error print_error `(v  1 e 0 0 ]
 {
 [v print_error@top top `*.25DCCuc  1 p 2 0 ]
 [v print_error@bottom bottom `*.25DCCuc  1 p 2 2 ]
-"3194
+"3257
 } 0
-"3196
+"3259
 [v _print_screen print_screen `(v  1 e 0 0 ]
 {
 [v print_screen@top top `*.25DCCuc  1 p 2 6 ]
 [v print_screen@bottom bottom `*.25DCCuc  1 p 2 8 ]
-"3203
+"3266
 } 0
-"2822
+"2885
 [v _i2c_second_line i2c_second_line `(v  1 e 0 0 ]
 {
-"2829
+"2892
 } 0
-"2813
+"2876
 [v _i2c_first_line i2c_first_line `(v  1 e 0 0 ]
 {
-"2820
+"2883
 } 0
-"2738
+"2801
 [v _i2c_Write_string i2c_Write_string `(v  1 e 0 0 ]
 {
 [v i2c_Write_string@data data `*.25DCCuc  1 p 2 3 ]
-"2749
+"2812
 } 0
-"2804
+"2867
 [v _clear_lcd clear_lcd `(v  1 e 0 0 ]
 {
-"2811
+"2874
 } 0
-"3741
+"3804
 [v _power_supply_set power_supply_set `(v  1 e 0 0 ]
 {
 [v power_supply_set@supply supply `uc  1 a 1 wreg ]
 [v power_supply_set@supply supply `uc  1 a 1 wreg ]
 [v power_supply_set@supply supply `uc  1 a 1 2 ]
-"3792
+"3855
 } 0
-"3859
-[v _debug_fast_tx debug_fast_tx `(v  1 e 0 0 ]
-{
-"3876
-[v debug_fast_tx@i i `uc  1 a 1 6 ]
-"3859
-[v debug_fast_tx@data data `ui  1 p 2 2 ]
-"3897
-} 0
-"2706
+"2769
 [v _buzz_one buzz_one `(v  1 e 0 0 ]
 {
 [v buzz_one@time time `ui  1 p 2 2 ]
-"2712
+"2775
 } 0
-"463
+"469
 [v _manage_read_byte manage_read_byte `(uc  1 e 1 0 ]
 {
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 wreg ]
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 wreg ]
-"465
+"471
 [v manage_read_byte@timeout_enable timeout_enable `uc  1 a 1 2 ]
-"498
+"504
 } 0
-"3402
+"3465
 [v _lcd_print_int lcd_print_int `(v  1 e 0 0 ]
 {
 [v lcd_print_int@number number `ui  1 p 2 6 ]
 [v lcd_print_int@pos pos `ui  1 p 2 8 ]
 [v lcd_print_int@decimal decimal `uc  1 p 1 10 ]
 [v lcd_print_int@ten_thou_digit ten_thou_digit `uc  1 p 1 11 ]
-"3426
+"3489
 } 0
-"3086
+"3149
 [v _ten_thou_conv ten_thou_conv `(v  1 e 0 0 ]
 {
 [v ten_thou_conv@n n `i  1 p 2 8 ]
-"3108
+"3171
 } 0
 "15 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\Umul16.c
 [v ___wmul __wmul `(ui  1 e 2 0 ]
@@ -625,68 +622,63 @@ pickit_idle 6
 [v ___bmul@multiplier multiplier `uc  1 a 1 5 ]
 "51
 } 0
-"2831 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"2894 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _lcd_set_cursor lcd_set_cursor `(v  1 e 0 0 ]
 {
 [v lcd_set_cursor@row row `uc  1 a 1 wreg ]
-"2833
+"2896
 [v lcd_set_cursor@LCD_position LCD_position `uc  1 a 1 6 ]
-"2831
+"2894
 [v lcd_set_cursor@row row `uc  1 a 1 wreg ]
 [v lcd_set_cursor@col col `uc  1 p 1 3 ]
-"2833
+"2896
 [v lcd_set_cursor@row row `uc  1 a 1 5 ]
-"2845
+"2908
 } 0
-"2751
+"2814
 [v _i2c_write_char i2c_write_char `(v  1 e 0 0 ]
 {
 [v i2c_write_char@char_data char_data `uc  1 a 1 wreg ]
 [v i2c_write_char@char_data char_data `uc  1 a 1 wreg ]
 [v i2c_write_char@char_data char_data `uc  1 a 1 3 ]
-"2758
+"2821
 } 0
-"3455
+"3518
 [v _init_uart2 init_uart2 `(v  1 e 0 0 ]
 {
-"3462
+"3525
 } 0
-"3445
-[v _init_uart1 init_uart1 `(v  1 e 0 0 ]
-{
-"3452
-} 0
-"2760
+"2823
 [v _init_i2c_lcd_5v init_i2c_lcd_5v `(v  1 e 0 0 ]
 {
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 wreg ]
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 wreg ]
 [v init_i2c_lcd_5v@single1_double2 single1_double2 `uc  1 p 1 3 ]
-"2762
+"2825
 [v init_i2c_lcd_5v@contrast contrast `uc  1 a 1 6 ]
-"2779
+"2842
 } 0
-"3653
+"3716
 [v _init_i2c init_i2c `(v  1 e 0 0 ]
 {
-"3661
+"3724
 } 0
-"3728
+"3791
 [v _init_current_sink init_current_sink `(v  1 e 0 0 ]
 {
-"3739
+"3802
 } 0
-"3663
+"3726
 [v _init_ADC init_ADC `(v  1 e 0 0 ]
 {
-"3669
+"3732
 } 0
-"3794
+"3857
 [v _get_current get_current `(ui  1 e 2 0 ]
 {
-"3796
+"3859
 [v get_current@temp temp `ui  1 a 2 36 ]
-"3806
+"3869
 } 0
 "28 C:\Program Files (x86)\Microchip\xc8\v1.35\sources\common\lwtoft.c
 [v ___lwtoft __lwtoft `(f  1 e 3 0 ]
@@ -728,55 +720,64 @@ pickit_idle 6
 [v ___ftpack@sign sign `uc  1 p 1 6 ]
 "86
 } 0
-"3689 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
+"3752 C:\Users\Zara Rose Coetzee\Documents\ET\Roll-up LOA\TJ code\DCBA Roll-Up 2017-18 TESTJIG CODE\DCBA Roll-up v7.X\newmain1.c
 [v _ADC_get_val ADC_get_val `(ui  1 e 2 0 ]
 {
 [v ADC_get_val@channel channel `uc  1 a 1 wreg ]
-"3691
+"3754
 [v ADC_get_val@return_val return_val `ui  1 a 2 6 ]
-"3689
+"3752
 [v ADC_get_val@channel channel `uc  1 a 1 wreg ]
-"3692
+"3755
 [v ADC_get_val@channel channel `uc  1 a 1 8 ]
-"3704
+"3767
 } 0
-"3808
+"3922
+[v _debug_fast_tx debug_fast_tx `(v  1 e 0 0 ]
+{
+"3939
+[v debug_fast_tx@i i `uc  1 a 1 6 ]
+"3922
+[v debug_fast_tx@data data `ui  1 p 2 2 ]
+"3960
+} 0
+"3871
 [v _Vout_set Vout_set `(v  1 e 0 0 ]
 {
-"3809
+"3872
 [v Vout_set@digi_step digi_step `ul  1 a 4 0 ]
-"3808
+"3871
 [v Vout_set@Volts Volts `i  1 p 2 6 ]
-"3848
+"3911
 } 0
-"3850
+"3913
 [v _digitalpot digitalpot `(v  1 e 0 0 ]
 {
 [v digitalpot@value value `uc  1 a 1 wreg ]
 [v digitalpot@value value `uc  1 a 1 wreg ]
 [v digitalpot@value value `uc  1 a 1 5 ]
-"3857
+"3920
 } 0
-"2726
+"2789
 [v _i2c_Write i2c_Write `(v  1 e 0 0 ]
 {
 [v i2c_Write@data data `uc  1 a 1 wreg ]
 [v i2c_Write@data data `uc  1 a 1 wreg ]
 [v i2c_Write@data data `uc  1 a 1 2 ]
-"2730
+"2793
 } 0
-"2732
+"2795
 [v _i2c_Stop i2c_Stop `(v  1 e 0 0 ]
 {
-"2736
+"2799
 } 0
-"2718
+"2781
 [v _i2c_Start i2c_Start `(v  1 e 0 0 ]
 {
-"2724
+"2787
 } 0
-"946
+"952
 [v _isr isr `II(v  1 e 0 0 ]
 {
-"1103
+"1150
 } 0

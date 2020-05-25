@@ -4863,10 +4863,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 104 "mcc_generated_files/pin_manager.h"
+# 106 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 116
+# 118
 void PIN_MANAGER_IOC(void);
 
 
@@ -4899,7 +4899,9 @@ void PIN_MANAGER_IOC(void);
 #pragma config LPBOR = OFF
 #pragma config LVP = OFF
 
-# 159
+# 162
+unsigned char SMXI = 0;
+
 void i2c_Write(unsigned char data);
 void i2c_Start(void);
 void i2c_Stop(void);
@@ -4936,35 +4938,35 @@ void print_error(const unsigned char *top, const unsigned char *bottom);
 void print_screen(const unsigned char *top, const unsigned char *bottom);
 void lcd_print_int(unsigned int number, unsigned int pos, unsigned char decimal, unsigned char ten_thou_digit);
 
-# 206
+# 211
 void init_uart1(void);
 void init_uart2(void);
 
-# 217
+# 222
 void disable_uart(void);
 
-# 227
+# 232
 void enable_uart(void);
 
-# 234
+# 239
 void send_uart1(unsigned char uart1_data);
 void send_uart2(unsigned char uart1_data);
 
-# 242
+# 247
 void uart_reset(void);
 
-# 251
+# 256
 unsigned char uart_receive_four(unsigned int uart1_timer);
 
-# 260
+# 265
 unsigned char uart_send_receive_packet(unsigned char opcode, unsigned char byte_1, unsigned char byte_2, unsigned char byte_3, unsigned int uart2_receive_timer);
 
 void set_rollup(unsigned char cmd, unsigned char data);
 
-# 267
+# 272
 void get_rollup(unsigned char cmd);
 
-# 273
+# 278
 void buzz_one(unsigned int time);
 void testjig_done(unsigned char state, unsigned char device_type);
 
@@ -4979,13 +4981,13 @@ enum {
 pickit_finish, pickit_start, pickit_push_button, pgm_start_delay, pickit_busy, pickit_error, pickit_idle
 } pickit_state;
 
-# 367
+# 373
 unsigned char usart_receive_state_main;
 
-# 378
+# 384
 unsigned char usart_fault_state;
 
-# 391
+# 397
 volatile bit usart_fault_flag;
 const unsigned int popup_delay = 15;
 unsigned char button_beep_delay = 2 ;
@@ -5025,7 +5027,7 @@ void EUSART1_Write(unsigned char txData)
 while (TX2STAbits.TRMT == 0);
 TX2REG = txData;
 
-# 434
+# 440
 }
 
 void send_usart_packet_manage(unsigned char command_byte_1, unsigned int Data_carry)
@@ -5072,7 +5074,7 @@ usart_fault_flag = 1;
 return 0;
 }
 
-# 485
+# 491
 }
 
 if(1 == RC2STAbits.OERR)
@@ -5243,7 +5245,7 @@ print_error("Comms_Data_Err", "");
 
 break;
 
-# 934
+# 940
 }
 
 
@@ -5251,7 +5253,7 @@ break;
 
 }
 
-# 945
+# 951
 void interrupt
 isr(void) {
 if (INTCONbits.TMR0IF == 1)
@@ -5281,11 +5283,20 @@ else
 switch (pickit_state)
 {
 case pickit_start:
-
+if(SMXI)
+{
 LATB7 = 1;
 LATA7 = 1;
-
-# 981
+LATC2 = 0;
+LATC7 = 0;
+}
+else
+{
+LATC2 = 1;
+LATC7 = 1;
+LATA7 = 0;
+LATB7 = 0;
+}
 pickit_timer = 500;
 pickit_state = pickit_push_button;
 break;
@@ -5305,13 +5316,45 @@ pickit_state = pickit_busy;
 break;
 
 case pickit_busy:
-
+LATC6 = 0;
 pickit_pgm_timeout++;
 if (pickit_pgm_timeout > 8000)
 {
 pickit_state = pickit_finish;;
 }
 
+if(SMXI)
+{
+if((RE4 == 0)&&(RE5 == 1))
+{
+pickit_all_counter++;
+
+
+
+pickit_state = pickit_error;
+
+
+}
+else
+{
+pickit_all_counter = 0;
+}
+
+if((RE4 == 0)&&(RE5 == 0))
+{
+pickit_red_counter++;
+if (pickit_red_counter > 400)
+{
+pickit_state = pickit_finish;
+}
+}
+else
+{
+pickit_red_counter = 0;
+}
+}
+else
+{
 if((RE7 == 0)&&(RB0 == 1))
 {
 pickit_all_counter++;
@@ -5339,8 +5382,9 @@ else
 {
 pickit_red_counter = 0;
 }
+}
 
-# 1059
+# 1104
 pickit_timer = 1;
 
 break;
@@ -5349,6 +5393,7 @@ LATC2 = 0;
 LATC7 = 0;
 LATB7 = 0;
 LATA7 = 0;
+LATC6 = 0;
 
 
 break;
@@ -5357,6 +5402,7 @@ LATC2 = 0;
 LATC7 = 0;
 LATB7 = 0;
 LATA7 = 0;
+LATC6 = 0;
 
 
 pickit_state = pickit_idle;
@@ -5404,7 +5450,7 @@ TRISB = 0b00001111;
 TRISC = 0b00011010;
 TRISD = 0b10001111;
 TRISE = 0b11110110;
-TRISF = 0b00101000;
+TRISF = 0b00101100;
 TRISG = 0b11100110;
 
 PORTA = 0b00000000;
@@ -5425,6 +5471,7 @@ ANSELD = 0b00001111;
 ANSELE = 0b00000110;
 ANSELF = 0b00000000;
 ANSELG = 0b00000000;
+
 
 power_supply_set(4);
 
@@ -5453,8 +5500,9 @@ LATC5 = 1;
 
 
 
+pickit_state = pickit_idle;
 print_screen("DCBA Roll-up TJ", "-> Insert PCB & Start");
-
+LATC6 = 0;
 if(RF2 == 0)
 {
 print_screen("Board","Detected");
@@ -5484,13 +5532,16 @@ _delay((unsigned long)((500)*(16000000/4000.0)));
 Vout_set(12);
 if(ADC_get_val(0b01100101) >= 100)
 {
-
+SMXI = 1;
 print_screen("SMXI version ","detected");
-}else
+}
+else if(ADC_get_val(0b01100001) >= 100)
 {
+SMXI = 0;
 print_screen("Local version ","detected");
 }
-
+else
+print_error("Error", "Check 5v");
 _delay((unsigned long)((1000)*(16000000/4000.0)));
 
 Vout_set(34);
@@ -5506,7 +5557,7 @@ print_error("Error", "Motor Short");
 
 print_screen("Measuring", "Q Current");
 
-# 1231
+# 1283
 if(ADC_val > 20)
 {
 print_error("Q Current", "Too High");
@@ -5534,6 +5585,7 @@ lcd_print_int(ADC_val, 1, 1, 1);
 
 if(ADC_val < 110)
 {
+
 print_error("5V Voltage", "Too Low");
 }
 if(ADC_val > 133)
@@ -5541,30 +5593,52 @@ if(ADC_val > 133)
 print_error("5V Voltage", "Too High");
 }
 
+if(SMXI)
+{
 
-
-print_screen("Measuring 5v", "");
+print_screen("Measuring 5v", "SMXI");
 
 ADC_val = ADC_get_val(0b01100101);
 
 
 if(ADC_val < 110)
 {
-print_error("5V Voltage", "Too Low");
+print_error("5V SMXI", "Too Low");
 }
 if(ADC_val > 133)
 {
-print_error("5V Voltage", "Too High");
+print_error("5V SMXI", "Too High");
 }
 
-# 1291
+}
+
+# 1345
 print_screen("Programming", "Bypassed");
 
-# 1314
+
+print_screen("Programming..", "");
+
+pickit_state = pickit_start;
+
+while(1)
+{
+if(pickit_state == pickit_error)
+{
+print_error("Programming", "ERROR");
+}
+
+if( pickit_state == pickit_idle)
+{
+break;
+}
+}
+
+print_screen("Programming", "Done");
+
 _delay((unsigned long)((1000)*(16000000/4000.0)));
 
 init_uart2();
-init_uart1();
+
 
 _delay((unsigned long)((300)*(16000000/4000.0)));
 
@@ -5574,7 +5648,8 @@ Data_Temp_Work_int = receive_data_bytes(1000);
 
 
 
-
+if(SMXI)
+{
 if(Data_Temp_Work_int > 2420)
 {
 print_error("V1 Voltage b", "Too High");
@@ -5583,8 +5658,22 @@ if(Data_Temp_Work_int < 2370)
 {
 print_error("V1 Voltage b", "Too Low");
 }
+}
+else
+{
+lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
+_delay((unsigned long)((1000)*(16000000/4000.0)));
+if(Data_Temp_Work_int > 1000)
+{
+print_error("V1 Voltage b", "Too High");
+}
+if(Data_Temp_Work_int < 580)
+{
+print_error("V1 Voltage b", "Too Low");
+}
+}
 
-# 1351
+# 1410
 LATB6 = 1;
 LATB4 = 1;
 
@@ -5593,8 +5682,9 @@ LATB4 = 1;
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
 
-# 1367
+# 1426
 ADC_val = ADC_get_val(0b01110101);
+
 
 
 if(ADC_val > 646)
@@ -5606,7 +5696,7 @@ if(ADC_val < 618)
 {
 print_error("Charge Err", "Voltage to Low");
 
-# 1387
+# 1447
 }
 
 
@@ -5616,12 +5706,13 @@ LATB4 = 0;
 
 _delay((unsigned long)((200)*(16000000/4000.0)));
 
-# 1406
+# 1466
 send_usart_packet_manage(129, 129);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
 
-
+if(SMXI)
+{
 if(Data_Temp_Work_int > 2100)
 {
 print_error("V2 SENSE", "Too High");
@@ -5630,8 +5721,23 @@ if(Data_Temp_Work_int < 2000)
 {
 print_error("V2 SENSE", "Too Low");
 }
+}
+else
+{
+lcd_print_int(ADC_val, 1, 1, 1);
+_delay((unsigned long)((1000)*(16000000/4000.0)));
 
-# 1460
+if(Data_Temp_Work_int > 700)
+{
+print_error("V2 SENSE", "Too High");
+}
+if(Data_Temp_Work_int < 495)
+{
+print_error("V2 SENSE", "Too Low");
+}
+}
+
+# 1526
 LATG4 = 0;
 
 _delay((unsigned long)((300)*(16000000/4000.0)));
@@ -5639,7 +5745,7 @@ _delay((unsigned long)((300)*(16000000/4000.0)));
 send_usart_packet_manage(133, 133);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
-# 1471
+# 1537
 if(Data_Temp_Work_int < 1010)
 {
 print_error("Beam Input Err", "Not released");
@@ -5653,7 +5759,8 @@ send_usart_packet_manage(133, 133);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
 
-
+if(SMXI)
+{
 if(Data_Temp_Work_int > 100)
 {
 print_error("Beam Input Err", "V High");
@@ -5662,8 +5769,19 @@ if(Data_Temp_Work_int < 50)
 {
 print_error("Beam Input Err", "V Low");
 }
+}
+else
+{
+if(Data_Temp_Work_int > 28)
+{
+print_error("Beam Input Err", "V High");
+}
+if(Data_Temp_Work_int < 18)
+{
+print_error("Beam Input Err", "V Low");
+}
+}
 
-# 1504
 LATG4 = 0;
 
 
@@ -5672,7 +5790,7 @@ print_screen("Testing", "All io's high");
 send_usart_packet_manage(148, 148);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
-# 1517
+# 1586
 if(!!((Data_Temp_Work_int) & (1<<(0))) != 1)
 {
 print_error("Error", "Encoder Input");
@@ -5693,7 +5811,7 @@ if(!!((Data_Temp_Work_int) & (1<<(3))) != 1)
 print_error("Error", "Butt Down Input");
 }
 
-# 1542
+# 1611
 if(!!((Data_Temp_Work_int) & (1<<(5))) != 1)
 {
 print_error("Error", "Limit Input");
@@ -5706,7 +5824,7 @@ print_error("Error", "Bt Input");
 
 print_screen("Testing", "All io's high");
 
-# 1559
+# 1628
 LATG0=1;
 
 _delay((unsigned long)((10)*(16000000/4000.0)));
@@ -5786,31 +5904,24 @@ Data_Temp_Work_int = receive_data_bytes(1000);
 
 _delay((unsigned long)((10)*(16000000/4000.0)));
 
-
-
-while(1)
+if(SMXI)
 {
-LATF1 = 1;
-RF0 = 1;
-LATA3 = 1;
-RA2 = 1;
-_delay((unsigned long)((1000)*(16000000/4000.0)));
-LATF1 = 0;
+
+RF1 = 0;
 RF0 = 0;
-LATA3 = 0;
+RA3 = 0;
 RA2 = 0;
-_delay((unsigned long)((1000)*(16000000/4000.0)));
-}
+_delay((unsigned long)((10)*(16000000/4000.0)));
+
 
 print_screen("","");
 send_usart_packet_manage(149, 149);
 Data_Temp_Work_int = receive_data_bytes(1000);
 lcd_print_int(Data_Temp_Work_int, 1, 1, 1);
-while(1);
 
 _delay((unsigned long)((3000)*(16000000/4000.0)));
 
-if((Data_Temp_Work_int & 0x01) == 1)
+if(Data_Temp_Work_int & 0x01)
 {
 print_error("Error LOW", "SXMI ch 1");
 }
@@ -5829,44 +5940,44 @@ print_error("Error LOW", "SXMI ch 4");
 
 _delay((unsigned long)((10)*(16000000/4000.0)));
 
-LATF1 = 1;
+RF1 = 1;
 RF0 = 1;
-LATA3 = 1;
+RA3 = 1;
 RA2 = 1;
 
-_delay((unsigned long)((10)*(16000000/4000.0)));
+_delay((unsigned long)((1000)*(16000000/4000.0)));
 
 send_usart_packet_manage(150, 150);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
 
-if(Data_Temp_Work_int & 0x01)
+if(!(Data_Temp_Work_int & 0x01))
 {
 print_error("Error High", "SXMI ch 1");
 }
-if(Data_Temp_Work_int & 0x02)
+if(!(Data_Temp_Work_int & 0x02))
 {
 print_error("Error High", "SXMI ch 2");
 }
-if(Data_Temp_Work_int & 0x04)
+if(!(Data_Temp_Work_int & 0x04))
 {
 print_error("Error High", "SXMI ch 3");
 }
-if(Data_Temp_Work_int & 0x08)
+if(!(Data_Temp_Work_int & 0x08))
 {
 print_error("Error High", "SXMI ch 4");
 }
 
 
-LATF1 = 0;
+RF1 = 0;
 RF0 = 0;
-LATA3 = 0;
+RA3 = 0;
 RA2 = 0;
 
 
 print_screen("SMXI OK","");
 _delay((unsigned long)((1000)*(16000000/4000.0)));
-
+}
 _delay((unsigned long)((10)*(16000000/4000.0)));
 
 
@@ -6174,7 +6285,7 @@ _delay((unsigned long)((1000)*(16000000/4000.0)));
 send_usart_packet_manage(132, 132);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
-# 2030
+# 2092
 if(Data_Temp_Work_int < 1)
 {
 print_error("Error Motor", "Circuit Open");
@@ -6234,10 +6345,30 @@ _delay((unsigned long)((100)*(16000000/4000.0)));
 send_usart_packet_manage(146, 1);
 Data_Temp_Work_int = receive_data_bytes(1000);
 
-# 2109
+
+if(!SMXI)
+{
+print_screen("Testing", "Rx System");
+
+LATF4 = 1;
+_delay((unsigned long)((500)*(16000000/4000.0)));
+
+
+
+send_usart_packet_manage(252, 252);
+Data_Temp_Work_int = receive_data_bytes(2000);
+
+if(Data_Temp_Work_int == 1)
+{
+print_error("Error RF", "Timeout");
+}
+
+LATF4 = 0;
+}
+
 print_screen("Testing Charger", "");
 
-# 2117
+# 2180
 LATB6 = 1;
 LATB4 = 1;
 
@@ -6256,7 +6387,7 @@ if(ADC_val < 618)
 {
 print_error("Charge Err", "Voltage to Low");
 
-# 2144
+# 2207
 }
 
 
@@ -6316,7 +6447,7 @@ buzz_timer = 1000 ; LATC5 = 1;
 while(1)
 {}
 
-# 2630
+# 2693
 }
 
 void testjig_done(unsigned char state, unsigned char device_type)
@@ -6396,10 +6527,10 @@ break;
 void buzz_one(unsigned int time)
 {
 
-# 2712
+# 2775
 }
 
-# 2718
+# 2781
 void i2c_Start(void) {
 
 SSP1CON2bits.SEN = 1;
@@ -6463,7 +6594,7 @@ _delay((unsigned long)((2)*(16000000/4000.0)));
 i2c_Stop();
 }
 
-# 2804
+# 2867
 void clear_lcd(void) {
 i2c_Start();
 i2c_Write(0x7C);
@@ -6519,7 +6650,7 @@ i2c_Write(0x0F);
 i2c_Stop();
 }
 
-# 3070
+# 3133
 void contrast_set(unsigned char contrast)
 {
 char cont_low = 0x70;
@@ -6580,7 +6711,7 @@ ten_thou = (hund * 0x67) >> 10;
 hund = hund - 10 * ten_thou;
 }
 
-# 3173
+# 3236
 void print_error(const unsigned char *top, const unsigned char *bottom)
 {
 CCPR9L = 0;
@@ -6588,7 +6719,7 @@ power_supply_set(4);
 
 
 RE0 = 0;
-debug_fast_tx(12345);
+
 buzz_one(1000);
 while (1)
 {
@@ -6756,7 +6887,7 @@ i2c_write_char(charmap[i]);
 clear_lcd();
 }
 
-# 3402
+# 3465
 void lcd_print_int(unsigned int number, unsigned int pos, unsigned char decimal, unsigned char ten_thou_digit)
 {
 lcd_set_cursor(2, pos + 1 - ten_thou_digit);
@@ -6783,7 +6914,7 @@ if (decimal & 0x02)i2c_write_char('.');
 i2c_write_char(unit + 48);
 }
 
-# 3445
+# 3508
 void init_uart1(void)
 {
 TX1STA = 0b00100000;
@@ -6803,7 +6934,7 @@ SP2BRGH = 0x00;
 SP2BRGL = 103;
 }
 
-# 3483
+# 3546
 void send_uart1(unsigned char uart1_data) {
 while (TX1STAbits.TRMT == 0);
 TX1REG = uart1_data;
@@ -6884,7 +7015,7 @@ lcd_print_int(callsign, 10, 0b00001000, 1);
 while(1)
 {}
 
-# 3573
+# 3636
 ADC_val=uart_buff_work_recieve[1]*255+uart_buff_work_recieve[2];
 voltage_i = ADC_to_mv_DUT(ADC_val);
 
@@ -7113,14 +7244,14 @@ temp = ADC_get_val(0b01010001);
 
 temp = temp * 1.28;
 
-# 3805
+# 3868
 return temp;
 }
 
 void Vout_set(int Volts) {
 unsigned long digi_step = 0;
 
-# 3815
+# 3878
 switch (Volts) {
 
 case 12:
@@ -7149,7 +7280,7 @@ digi_step = 0;
 break;
 }
 
-# 3847
+# 3910
 digitalpot((unsigned char) digi_step);
 }
 
@@ -7166,7 +7297,7 @@ void debug_fast_tx(unsigned int data) {
 GIE = 0;
 LATD2 = 0;
 
-# 3867
+# 3930
 __nop();
 __nop();
 __nop();
